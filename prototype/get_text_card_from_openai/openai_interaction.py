@@ -37,14 +37,13 @@ presence_penalty: float = 0
 frequency_penalty: float = 0.1
 response_number = 1
 
-# model: str = "gpt-3.5-turbo"
 model: str = "gpt-4-turbo"
 
 max_tokens: int = 256
 n: int = 1
 
 
-def chat_generate_text(input_word: str) -> list[str]:
+def chat_generate_text(input_word: str) -> str:
     messages = [
         {"role": "system", "content": f"{anki_full_prompt}"},
         {"role": "user", "content": input_word},
