@@ -2,6 +2,9 @@ import logging
 import os
 from openai import OpenAI
 
+from generator.config import Config
+from generator.entities import Word
+
 anki_prompt_preamble = """I want you to act like a professional Anki card maker, able to create Anki cards from the text I provide.
 
 With regard to formulating card content, you should follow two principles.
@@ -9,6 +12,14 @@ First, principle of minimal information: The material you learn should be formul
 Second, optimize the wording: The wording of your items must be optimized to ensure that, in a minimum amount of time, the user who reads the question, can respond as quickly as possible. This will reduce error rates, increase specificity, reduce response time, and help your concentration.
 
 You can not use the word from input in the output. It should be masked with underscores.
+
+I can provide a word or a phrase with empty context
+WORD: [target word]; CONTEXT: []
+In this case, use most likely context or different contexts of your choice.
+
+Alternatively, I can provide a word or a phrase with a context:
+WORD: [target word]; CONTEXT: [context]
+In this case, use the given context for card generation.
 
 Create Anki cards based on the text above as follows:
 """
@@ -34,18 +45,16 @@ anki_full_prompt = anki_prompt_preamble + ''.join(anki_examples_strings)
 logger = logging.getLogger()
 
 
-def chat_generate_text(input_word: str) -> str:
+def chat_generate_text(input_word: Word) -> str:
     logger.info(f"ChatGPT card text: processing word [{input_word}]")
 
     messages = [
         {"role": "system", "content": f"{anki_full_prompt}"},
-        {"role": "user", "content": input_word},
+        {"role": "user", "content": f"WORD: [{input_word.word}]; CONTEXT: [{input_word.context}]"},
     ]
-    openai_api_key = os.environ.get("OPENAI_API_KEY")
-    if openai_api_key == None:
-        raise EnvironmentError("OPENAI_API_KEY environment variable is not set")
+
     client = OpenAI(
-        api_key=openai_api_key
+        api_key=Config.OPENAI_API_KEY
     )
 
     logger.debug(f"ChatGPT card generation messages {messages}")

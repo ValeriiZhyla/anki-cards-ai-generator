@@ -4,6 +4,7 @@ import os
 from openai import OpenAI
 
 from generator.config import Config
+from generator.entities import Word
 
 client = OpenAI()
 
@@ -16,6 +17,9 @@ Ensure that the images are directly relevant to the learning objectives. The vis
 
 The image should not directly label or highlight the keyword unless it’s crucial for understanding. Instead, the focus should be on illustrating the context or environment related to the keyword.
 
+I will send you a word or phrase and the text, generated for this word and used in the card.
+WORD: [target word]; CARD TEXT: [text]
+
 Your prompt will be directly used as DALLE-3 input, do not include any explanations or further text, only prompt.
 Avoid anything that can be construed as violent, explicit, or that depicts harmful or illegal activities.
 Do not include any real personal data or identifiable information about individuals, whether they are public figures or private persons.
@@ -24,24 +28,23 @@ Steer clear of creating content that could be used to spread misinformation or d
 Do not use copyrighted characters, logos, or any specific recognizable branding elements.
 Exclude any sexual or suggestive content, especially those involving minors.
 You have to create a prompt, which will be accepted by DALLE-3.
-
-I will send you a word and the card, generated for this word.
 """
 
 logger = logging.getLogger()
 
-def chat_generate_dalle_prompt(word: str, card_text) -> str:
+def chat_generate_dalle_prompt(word: Word, card_text) -> str:
     logger.info(f"DALLE prompt generation: processing word [{word}]")
     logger.debug(f"DALLE prompt generation: processing card text [{card_text}]")
 
 
     messages = [
         {"role": "system", "content": f"{anki_prompt_preamble}"},
-        {"role": "user", "content": f"Word: {word}; Text: {card_text}"},
+        {"role": "user", "content": f"WORD: [{word.word}]; CARD TEXT: [{card_text}]"},
     ]
     client = OpenAI(
         api_key=Config.OPENAI_API_KEY
     )
+
     logger.debug(f"DALLE prompt generation messages {messages}")
     response = client.chat.completions.create(
         # input prompt
