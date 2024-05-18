@@ -7,19 +7,18 @@ import requests
 
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawData
-from openai_api import picture, text
+from openai_api import image, text
 
 logger = logging.getLogger()
 
 
-def generate_text_and_picture(input_words: list[WordWithContext], processing_folder_path: str) -> dict[WordWithContext, CardRawData]:
-    logger.info(f"Starting generation of text and pictures for words: {input_words}")
-    logger.info(f"Using the folder {processing_folder_path} for processing")
+def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawData]:
+    logger.info(f"Starting generation of text and images for words: {input_words}")
 
     words_cards: dict[WordWithContext, CardRawData] = {}
 
     for word_with_context in input_words:
-        card_raw = create_card_for_word(word_with_context, processing_folder_path)
+        card_raw = create_card_for_word(word_with_context)
         words_cards[word_with_context] = card_raw
         logger.info("[{}] processed")
         wait_after_word_processing()
@@ -27,23 +26,23 @@ def generate_text_and_picture(input_words: list[WordWithContext], processing_fol
     return words_cards
 
 
-def create_card_for_word(word_with_context, processing_folder_path) -> CardRawData:
+def create_card_for_word(word_with_context) -> CardRawData:
     card_text = text.chat_generate_text(word_with_context)
     logger.info("Card text is created")
 
-    picture_prompt = picture.chat_generate_dalle_prompt(word_with_context, card_text)
-    picture_url = picture.chat_generate_image(picture_prompt)
-    logger.info("Picture is created")
+    image_prompt = image.chat_generate_dalle_prompt(word_with_context, card_text)
+    image_url = image.chat_generate_image(image_prompt)
+    logger.info("Image is created")
 
-    logger.info("Card text and picture will be saved")
-    card_text_path = generate_text_path(processing_folder_path, word_with_context)
+    logger.info("Card text and image will be saved")
+    card_text_path = generate_text_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     save_card_text(card_text, card_text_path)
-    picture_path = generate_picture_path(processing_folder_path, word_with_context)
-    download_and_save_image(picture_url, picture_path)
-    logger.info(f"Card text and picture are saved in [{processing_folder_path}]")
+    image_path = generate_image_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
+    download_and_save_image(image_url, image_path)
+    logger.info(f"Card text and image are saved in [{Config.PROCESSING_DIRECTORY_PATH}]")
 
     card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text, card_text_path=card_text_path,
-                                        picture_prompt=picture_prompt, picture_url=picture_url, picture_path=picture_path)
+                                        image_prompt=image_prompt, image_url=image_url, image_path=image_path)
     return card_raw
 
 
@@ -69,12 +68,12 @@ def save_card_text(card_text, text_path):
     logger.info(f"Card text saved as {text_path}")
 
 
-def generate_picture_path(processing_folder_path: str, word: WordWithContext):
-    return os.path.join(processing_folder_path, word_to_filename(word) + ".png")
+def generate_image_path(processing_directory_path: str, word: WordWithContext):
+    return os.path.join(processing_directory_path, word_to_filename(word) + ".png")
 
 
-def generate_text_path(processing_folder_path, word):
-    return os.path.join(processing_folder_path, word_to_filename(word) + ".txt")
+def generate_text_path(processing_directory_path, word):
+    return os.path.join(processing_directory_path, word_to_filename(word) + ".txt")
 
 
 def word_to_filename(word: WordWithContext) -> str:

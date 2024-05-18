@@ -19,18 +19,18 @@ class CardRawData:
     word: str
     card_text: str
     card_text_path: str
-    picture_prompt: str
-    picture_url: str
-    picture_path: str
+    image_prompt: str
+    image_url: str
+    image_path: str
 
     def __post_init__(self):
-        if self.word is None or self.card_text is None or self.card_text_path is None or self.picture_url is None or self.picture_path is None:
+        if self.word is None or self.card_text is None or self.card_text_path is None or self.image_url is None or self.image_path is None:
             raise ValueError("Attributes cannot be None")
         if self.word == "":
             raise ValueError("Word cannot be empty")
         if self.card_text == "":
             raise ValueError("Card text cannot be empty")
-        if self.picture_url == "":
-            raise ValueError("Picture URL cannot be empty")
-        if self.card_text_path == "" or self.picture_path == "":
+        if self.image_url == "":
+            raise ValueError("Image URL cannot be empty")
+        if self.card_text_path == "" or self.image_path == "":
             raise ValueError("Paths cannot be empty")
