@@ -3,7 +3,7 @@ import os
 from openai import OpenAI
 
 from generator.config import Config
-from generator.entities import Word
+from generator.entities import WordWithContext
 
 anki_prompt_preamble = """I want you to act like a professional Anki card maker, able to create Anki cards from the text I provide.
 
@@ -45,12 +45,12 @@ anki_full_prompt = anki_prompt_preamble + ''.join(anki_examples_strings)
 logger = logging.getLogger()
 
 
-def chat_generate_text(input_word: Word) -> str:
-    logger.info(f"ChatGPT card text: processing word [{input_word}]")
+def chat_generate_text(word_with_context: WordWithContext) -> str:
+    logger.info(f"ChatGPT card text: processing word [{word_with_context}]")
 
     messages = [
         {"role": "system", "content": f"{anki_full_prompt}"},
-        {"role": "user", "content": f"WORD: [{input_word.word}]; CONTEXT: [{input_word.context}]"},
+        {"role": "user", "content": f"WORD: [{word_with_context.word}]; CONTEXT: [{word_with_context.context}]"},
     ]
 
     client = OpenAI(

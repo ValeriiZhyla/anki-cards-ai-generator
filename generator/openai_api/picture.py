@@ -4,7 +4,7 @@ import os
 from openai import OpenAI
 
 from generator.config import Config
-from generator.entities import Word
+from generator.entities import WordWithContext
 
 client = OpenAI()
 
@@ -32,14 +32,14 @@ You have to create a prompt, which will be accepted by DALLE-3.
 
 logger = logging.getLogger()
 
-def chat_generate_dalle_prompt(word: Word, card_text) -> str:
-    logger.info(f"DALLE prompt generation: processing word [{word}]")
-    logger.debug(f"DALLE prompt generation: processing card text [{card_text}]")
 
+def chat_generate_dalle_prompt(word_with_context: WordWithContext, card_text) -> str:
+    logger.info(f"DALLE prompt generation: processing word [{word_with_context}]")
+    logger.debug(f"DALLE prompt generation: processing card text [{card_text}]")
 
     messages = [
         {"role": "system", "content": f"{anki_prompt_preamble}"},
-        {"role": "user", "content": f"WORD: [{word.word}]; CARD TEXT: [{card_text}]"},
+        {"role": "user", "content": f"WORD: [{word_with_context.word}]; CARD TEXT: [{card_text}]"},
     ]
     client = OpenAI(
         api_key=Config.OPENAI_API_KEY
