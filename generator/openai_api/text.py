@@ -19,7 +19,14 @@ In this case, use most likely context or different contexts of your choice.
 Alternatively, I can provide a word or a phrase with a context:
 WORD: [target word]; CONTEXT: [context]
 In this case, use the given context for card generation.
-Context can be a sentence with this word or a single or several fields related to this word.
+Context can be a sentence with this word, but it can also be a single or several fields related to this word. 
+You should not mix the fields in the card, and use the context only if it is meaningful for the card.
+It the context of combinations of contexts violated from conventional word usage, ignore this context.
+If there are several important contexts, write the main context first. 
+
+Do not put any unrelated sentences in the card, as the "Card Example". Your output should contain only the text for the card.
+
+I expect 3-4 sentences in every card.
 
 Create Anki cards based on the text above as follows:
 """

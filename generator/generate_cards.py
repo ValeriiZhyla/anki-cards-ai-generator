@@ -13,16 +13,20 @@ logger = logging.getLogger()
 
 
 def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawData]:
-    logger.info(f"Starting generation of text and images for {len(input_words)} words {list(map(lambda entry: entry.word, input_words))}")
+    words_total = len(input_words)
+    words_remaining = words_total
+
+    logger.info(f"Starting generation of text and images for {words_total} words {list(map(lambda entry: entry.word, input_words))}")
 
     words_cards: dict[WordWithContext, CardRawData] = {}
 
     for word_with_context in input_words:
         card_raw = create_card_for_word(word_with_context)
         words_cards[word_with_context] = card_raw
-        logger.info("[{}] processed")
-        wait_after_word_processing()
-
+        logger.info(f"Word [{word_with_context.word}] processed")
+        words_remaining -= 1
+        if words_remaining > 0:
+            wait_after_word_processing()
     return words_cards
 
 

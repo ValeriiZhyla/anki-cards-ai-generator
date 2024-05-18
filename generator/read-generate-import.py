@@ -30,6 +30,7 @@ def main():
     Config.set_anki_deck_name_or_use_default(args.deck_name)
     Config.set_anki_media_directory_or_use_default(args.anki_media_directory_path)
     Config.set_processing_directory_path(args.processing_directory)
+    Config.check_anki_connect()
 
     logger = logging.getLogger()
 

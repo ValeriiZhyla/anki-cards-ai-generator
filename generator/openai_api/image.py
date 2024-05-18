@@ -18,6 +18,10 @@ The image should not directly label or highlight the keyword unless it’s cruci
 I will send you a word or phrase and the text, generated for this word and used in the card.
 WORD: [target word]; CARD TEXT: [text]
 
+Specify, that under no circumstances should there be text in the picture.
+
+Use only the main context from the card in the text, it should be the first used context from the card text.
+
 Your prompt will be directly used as DALLE-3 input, do not include any explanations or further text, only prompt.
 Avoid anything that can be construed as violent, explicit, or that depicts harmful or illegal activities.
 Do not include any real personal data or identifiable information about individuals, whether they are public figures or private persons.
