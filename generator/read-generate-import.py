@@ -36,6 +36,9 @@ def main():
 
     input_words: list[WordWithContext] = read_csv.read_words_with_context(args.input_file)
     logger.info("Input file processed")
+    # TODO check words in deck: if word is already in the deck - ask whether the word must be skipped
+    # TODO check words in directory: if word is already in the deck - as whether the existing card and picture file should be user or overwritten
+
     card_data: dict[WordWithContext, CardRawData] = generate_cards.generate_text_and_image(input_words)
     logger.info("Card generation completed")
     anki_importer.import_card_collection(card_data)

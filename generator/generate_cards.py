@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import re
@@ -40,13 +41,17 @@ def create_card_for_word(word_with_context) -> CardRawData:
 
     logger.info("Card text and image will be saved")
     card_text_path = generate_text_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
-    save_card_text(card_text, card_text_path)
+    save_text(card_text, card_text_path)
+    logger.info(f"Card text is saved as [{card_text_path}]")
     image_path = generate_image_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     download_and_save_image(image_url, image_path)
-    logger.info(f"Card text and image are saved in [{Config.PROCESSING_DIRECTORY_PATH}]")
+    logger.info(f"Card image is saved as [{image_path}]")
 
     card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text, card_text_path=card_text_path,
                                         image_prompt=image_prompt, image_url=image_url, image_path=image_path)
+    card_metadata_path = generate_metadata_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
+    save_text(json.dumps(card_raw), card_metadata_path)
+    logger.info(f"Card metadata is saved as [{card_metadata_path}]")
     return card_raw
 
 
@@ -66,10 +71,10 @@ def download_and_save_image(url, image_path):
         raise IOError(f"Failed to retrieve image from URL: {url}. Status code: {response.status_code}")
 
 
-def save_card_text(card_text, text_path):
-    with open(text_path, 'w', encoding='utf-8') as file:
-        file.write(card_text)
-    logger.info(f"Card text saved as {text_path}")
+def save_text(content: str, path):
+    with open(path, 'w', encoding='utf-8') as file:
+        file.write(content)
+    logger.debug(f"Text saved as {path}")
 
 
 def generate_image_path(processing_directory_path: str, word: WordWithContext):
@@ -79,6 +84,8 @@ def generate_image_path(processing_directory_path: str, word: WordWithContext):
 def generate_text_path(processing_directory_path, word):
     return os.path.join(processing_directory_path, word_to_filename(word) + ".txt")
 
+def generate_metadata_path(processing_directory_path, word):
+    return os.path.join(processing_directory_path, word_to_filename(word) + ".json")
 
 def word_to_filename(word: WordWithContext) -> str:
     # convert to lower case
