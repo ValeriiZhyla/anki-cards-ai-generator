@@ -1,9 +1,8 @@
 import logging
-import os
 from openai import OpenAI
 
-from generator.config import Config
-from generator.entities import WordWithContext
+from ..config import Config
+from ..entities import WordWithContext
 
 anki_prompt_preamble = """I want you to act like a professional Anki card maker, able to create Anki cards from the text I provide.
 
@@ -20,6 +19,7 @@ In this case, use most likely context or different contexts of your choice.
 Alternatively, I can provide a word or a phrase with a context:
 WORD: [target word]; CONTEXT: [context]
 In this case, use the given context for card generation.
+Context can be a sentence with this word or a single or several fields related to this word.
 
 Create Anki cards based on the text above as follows:
 """
@@ -46,7 +46,7 @@ logger = logging.getLogger()
 
 
 def chat_generate_text(word_with_context: WordWithContext) -> str:
-    logger.info(f"ChatGPT card text: processing word [{word_with_context}]")
+    logger.info(f"ChatGPT card text: processing word [{word_with_context.word}] with context [{word_with_context.context}]")
 
     messages = [
         {"role": "system", "content": f"{anki_full_prompt}"},
@@ -72,6 +72,6 @@ def chat_generate_text(word_with_context: WordWithContext) -> str:
     )
 
     generated_text = response.choices[0].message.content
-    logger.info(f"ChatGPT card text: {generated_text}")
-
+    logger.debug(f"ChatGPT generated card text for word {word_with_context.word}")
+    logger.debug(f"ChatGPT card text: {generated_text}")
     return generated_text

@@ -1,10 +1,8 @@
 import logging
-import os
-
 from openai import OpenAI
 
-from generator.config import Config
-from generator.entities import WordWithContext
+from ..config import Config
+from ..entities import WordWithContext
 
 client = OpenAI()
 

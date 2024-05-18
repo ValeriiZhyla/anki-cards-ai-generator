@@ -5,11 +5,12 @@ import shutil
 
 import requests
 
-from generator.anki import card_formatter
-from generator.config import Config
-from generator.entities import CardRawData, WordWithContext
+from ..anki import card_formatter
+from ..config import Config
+from ..entities import CardRawData, WordWithContext
 
 logger = logging.getLogger()
+
 
 def import_card_collection(cards: dict[WordWithContext, CardRawData]):
     for word in cards:
@@ -20,16 +21,19 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
         # TODO react to anki response
         logger.info(f"Card for word [{word.word}] imported in deck [{Config.DECK_NAME}]")
 
+
 def format_and_import_card(card_data: CardRawData):
     note = card_formatter.format(card_data, Config.DECK_NAME)
     copy_image_to_media_directory(card_data.image_path)
     result = invoke('addNote', {'note': note})
     return result
 
+
 def invoke(action, params):
     request = {'action': action, 'version': 6, 'params': params}
     response = requests.post(Config.ANKI_CONNECT_URL, json=request)
     return response.json()
+
 
 def copy_image_to_media_directory(image_path):
     image_filename = os.path.basename(image_path)

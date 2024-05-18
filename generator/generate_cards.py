@@ -7,13 +7,13 @@ import requests
 
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawData
-from openai_api import image, text
+from generator.openai_api import image, text
 
 logger = logging.getLogger()
 
 
 def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawData]:
-    logger.info(f"Starting generation of text and images for words: {input_words}")
+    logger.info(f"Starting generation of text and images for {len(input_words)} words {list(map(lambda entry: entry.word, input_words))}")
 
     words_cards: dict[WordWithContext, CardRawData] = {}
 

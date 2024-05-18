@@ -1,12 +1,11 @@
 import argparse
 import logging
 
-from generator import generator
-
 from generator.entities import WordWithContext, CardRawData
 from generator.input import read_csv
 from generator.anki import anki_importer
 from generator.config import Config
+from generator import generate_cards
 
 
 def main():
@@ -36,7 +35,7 @@ def main():
 
     input_words: list[WordWithContext] = read_csv.read_words_with_context(args.input_file)
     logger.info("Input file processed")
-    card_data: dict[WordWithContext, CardRawData] = generator.generate_text_and_image(input_words)
+    card_data: dict[WordWithContext, CardRawData] = generate_cards.generate_text_and_image(input_words)
     logger.info("Card generation completed")
     anki_importer.import_card_collection(card_data)
     logger.info("Import in Anki completed")

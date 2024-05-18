@@ -1,6 +1,6 @@
 import os
 
-from generator.entities import CardRawData
+from ..entities import CardRawData
 
 
 def format(card_data: CardRawData, deck_name: str):

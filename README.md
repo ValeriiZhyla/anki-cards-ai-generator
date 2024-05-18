@@ -30,11 +30,15 @@ Then Anki can be synchronized with AnkiWeb, and the deck can be used from other 
 
 ## Usage
 ### Input
-
+CSV with semicolon as separator (you can use commas in context)
 ### Output
 
 ## Interface
 
+## example
+```bash
+python -m generator.read-generate-import ./demo/input_words.csv ./processing
+```
 
 ## OpenAI API
 DALLE 3: 'dall-e-3', 3 RPM, 200 RPD
