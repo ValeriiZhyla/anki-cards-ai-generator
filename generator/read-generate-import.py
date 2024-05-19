@@ -6,6 +6,28 @@ from generator.input import read_csv
 from generator.anki import anki_importer
 from generator.config import Config
 from generator import generate_cards
+from generator import validation
+
+
+def process_existing_cards():
+    logging.info("Processing existing cards")
+    existing_cards: list[CardRawData] = validation.cards_in_directory(Config.PROCESSING_DIRECTORY_PATH)
+    existing_cards_validated: list[CardRawData] = validation.discard_invalid_cards(Config.PROCESSING_DIRECTORY_PATH, existing_cards)
+    existing_cards_data: dict[WordWithContext, CardRawData] = validation.cards_to_dict(existing_cards_validated)
+    anki_importer.import_card_collection(existing_cards_data)
+    logging.info("All existing cards processed")
+
+
+def process_new_cards(input_words: list[WordWithContext]):
+    # Validate inputs and environment
+    validation.check_whether_deck_exists(Config.DECK_NAME)
+    filtered_words = validation.filter_words_are_present_in_deck(Config.DECK_NAME, input_words)
+
+
+    generated_cards_data: dict[WordWithContext, CardRawData] = generate_cards.generate_text_and_image(filtered_words)
+    logging.info("Card generation completed")
+    anki_importer.import_card_collection(generated_cards_data)
+    logging.info("Import in Anki completed")
 
 
 def main():
@@ -32,19 +54,13 @@ def main():
     Config.set_processing_directory_path(args.processing_directory)
     Config.check_anki_connect()
 
-    logger = logging.getLogger()
+    # Processing
+    process_existing_cards()
 
     input_words: list[WordWithContext] = read_csv.read_words_with_context(args.input_file)
-    logger.info("Input file processed")
-    # TODO check words in deck: if word is already in the deck - ask whether the word must be skipped
-    # TODO check words in directory: if word is already in the deck - as whether the existing card and picture file should be user or overwritten
 
-    card_data: dict[WordWithContext, CardRawData] = generate_cards.generate_text_and_image(input_words)
-    logger.info("Card generation completed")
-    anki_importer.import_card_collection(card_data)
-    logger.info("Import in Anki completed")
-
-    logger.info("Processing completed")
+    process_new_cards(input_words)
+    logging.info("Processing completed")
 
 
 if __name__ == '__main__':

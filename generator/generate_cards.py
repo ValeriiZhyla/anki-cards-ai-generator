@@ -7,7 +7,7 @@ import time
 import requests
 
 from generator.config import Config
-from generator.entities import WordWithContext, CardRawData
+from generator.entities import WordWithContext, CardRawData, serialize_to_json
 from generator.openai_api import image, text
 
 logger = logging.getLogger()
@@ -37,21 +37,16 @@ def create_card_for_word(word_with_context) -> CardRawData:
 
     image_prompt = image.chat_generate_dalle_prompt(word_with_context, card_text)
     image_url = image.chat_generate_image(image_prompt)
-    logger.info("Image is created")
+    logger.info("Card Image is created")
 
-    logger.info("Card text and image will be saved")
-    card_text_path = generate_text_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
-    save_text(card_text, card_text_path)
-    logger.info(f"Card text is saved as [{card_text_path}]")
     image_path = generate_image_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     download_and_save_image(image_url, image_path)
     logger.info(f"Card image is saved as [{image_path}]")
 
-    card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text, card_text_path=card_text_path,
-                                        image_prompt=image_prompt, image_url=image_url, image_path=image_path)
-    card_metadata_path = generate_metadata_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
-    save_text(json.dumps(card_raw), card_metadata_path)
-    logger.info(f"Card metadata is saved as [{card_metadata_path}]")
+    card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text, image_prompt=image_prompt, image_url=image_url, image_path=image_path)
+    card_data_path = generate_card_data_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
+    save_text(serialize_to_json(card_raw), card_data_path)
+    logger.info(f"Card data is saved as [{card_data_path}]")
     return card_raw
 
 
@@ -81,10 +76,7 @@ def generate_image_path(processing_directory_path: str, word: WordWithContext):
     return os.path.join(processing_directory_path, word_to_filename(word) + ".png")
 
 
-def generate_text_path(processing_directory_path, word):
-    return os.path.join(processing_directory_path, word_to_filename(word) + ".txt")
-
-def generate_metadata_path(processing_directory_path, word):
+def generate_card_data_path(processing_directory_path, word):
     return os.path.join(processing_directory_path, word_to_filename(word) + ".json")
 
 def word_to_filename(word: WordWithContext) -> str:

@@ -93,3 +93,4 @@ class Config:
                 raise IOError("AnkiConnect is installed but returned a non-OK status code:", response.status_code)
         except requests.exceptions.ConnectionError:
             raise IOError("Failed to connect to AnkiConnect. It might not be running.")
+

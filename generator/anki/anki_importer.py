@@ -32,15 +32,26 @@ def format_and_import_card(card_data: CardRawData):
     return result
 
 
-def check_and_create_deck_if_not_exists(deck_name):
+def check_deck_exists(deck_name: str) -> bool:
     # Check existing decks
     result = invoke('deckNames')
     if deck_name not in result['result']:
-        # Deck does not exist, create it
-        invoke('createDeck', params={'deck': deck_name})
-        logger.info(f"Anki deck '{deck_name}' created")
+        logger.info(f"Anki deck '{deck_name}' does not exist")
+        return False
     else:
-        logger.info(f"Anki deck '{deck_name}' exists")
+        logger.debug(f"Anki deck '{deck_name}' exists")
+        return True
+
+
+def create_deck(deck_name):
+    result = invoke('createDeck', {'deck': deck_name})
+    if result.get('error') is None:
+        logging.info(f"Deck '{deck_name}' created successfully.")
+        return True
+    else:
+        error_msg = result.get('error')
+        logging.error(f"Failed to create deck '{deck_name}': {error_msg}")
+        raise Exception(f"An error occurred: {error_msg}")
 
 
 def check_card_exists(deck_name, search_term):
@@ -53,6 +64,30 @@ def check_card_exists(deck_name, search_term):
     else:
         logger.debug(f"Card with name term [{search_term}] does not exist in deck [{deck_name}]")
         return False
+
+
+def delete_card_from_deck(deck_name, search_term):
+    query = f'"deck:{deck_name}" "{search_term}"'
+    card_ids = find_cards(query)
+    if not card_ids:
+        logger.warning("No cards found with the specified term in the given deck.")
+        return False
+
+    delete_result = delete_cards(card_ids)
+    if delete_result.get('error') is None:
+        logger.info(f"Successfully deleted card for {search_term}")
+        return True
+    else:
+        logger.error(f"Failed to delete cards: {delete_result.get('error')}")
+        return False
+
+
+def find_cards(query):
+    return invoke('findCards', {'query': query})['result']
+
+
+def delete_cards(card_ids):
+    return invoke('deleteCards', {'cards': card_ids})
 
 
 def invoke(action, params=None):

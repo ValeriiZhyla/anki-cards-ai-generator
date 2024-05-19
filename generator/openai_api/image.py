@@ -22,6 +22,8 @@ Specify, that under no circumstances should there be text in the picture.
 
 Use only the main context from the card in the text, it should be the first used context from the card text.
 
+Try to avoid using people, especially generic pictures of people that are not directly related to the word.
+
 Your prompt will be directly used as DALLE-3 input, do not include any explanations or further text, only prompt.
 Avoid anything that can be construed as violent, explicit, or that depicts harmful or illegal activities.
 Do not include any real personal data or identifiable information about individuals, whether they are public figures or private persons.
