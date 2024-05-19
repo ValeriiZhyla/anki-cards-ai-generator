@@ -2,7 +2,7 @@ import argparse
 import logging
 
 from generator.entities import WordWithContext, CardRawData
-from generator.input import read_csv
+from generator.input import read_input_file
 from generator.anki import anki_importer
 from generator.config import Config
 from generator import generate_cards
@@ -20,9 +20,7 @@ def process_existing_cards():
 
 def process_new_cards(input_words: list[WordWithContext]):
     # Validate inputs and environment
-    validation.check_whether_deck_exists(Config.DECK_NAME)
     filtered_words = validation.filter_words_are_present_in_deck(Config.DECK_NAME, input_words)
-
 
     generated_cards_data: dict[WordWithContext, CardRawData] = generate_cards.generate_text_and_image(filtered_words)
     logging.info("Card generation completed")
@@ -54,12 +52,16 @@ def main():
     Config.set_processing_directory_path(args.processing_directory)
     Config.check_anki_connect()
 
+    # Validate Environment
+    validation.check_whether_deck_exists(Config.DECK_NAME)
+
     # Processing
     process_existing_cards()
-
-    input_words: list[WordWithContext] = read_csv.read_words_with_context(args.input_file)
-
+    logging.info("Existing cards processed")
+    input_words: list[WordWithContext] = read_input_file.read_file_based_on_extension(args.input_file)
+    logging.info("Input file read")
     process_new_cards(input_words)
+    logging.info("New cards processed")
     logging.info("Processing completed")
 
 

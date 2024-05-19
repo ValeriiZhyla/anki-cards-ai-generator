@@ -8,6 +8,7 @@ import requests
 from ..anki import card_formatter
 from ..config import Config
 from ..entities import CardRawData, WordWithContext
+from ..validation import confirm_action
 
 logger = logging.getLogger()
 
@@ -18,15 +19,18 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
         if card_raw_data is None:
             raise ValueError(f"No object for word [{word}]. Data structure: [{json.dumps(cards)}]")
         import_result = format_and_import_card(card_raw_data)
-        print(import_result)
-        # TODO react to anki response
-        # TODO unit tests for anki interaction
+        if 'error' in import_result:
+            logger.error(f"Error occurred during import of card for word [{word.word}]. Import error: [{import_result['error']}]")
+            abort = confirm_action("Do you want to proceed? If no, the processing will be aborted")
+            if abort:
+                raise Exception(f"Aborting processing after error: [{import_result['error']}]")
+            else:
+                continue
         logger.info(f"Card for word [{word.word}] imported in deck [{Config.DECK_NAME}]")
 
 
 def format_and_import_card(card_data: CardRawData):
     note = card_formatter.format(card_data, Config.DECK_NAME)
-    # TODO add if card exists in deck then generate new name (e.g with (Copy) and number)
     copy_image_to_media_directory(card_data.image_path)
     result = invoke('addNote', {'note': note})
     return result

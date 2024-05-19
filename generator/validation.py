@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from anki import anki_importer
+from generator.anki import anki_importer
 from generator.entities import WordWithContext, CardRawData
 from generator.generate_cards import generate_card_data_path
 
