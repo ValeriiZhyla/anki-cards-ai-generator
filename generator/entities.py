@@ -25,16 +25,16 @@ class CardRawData:
     version: int = 1
 
     def __post_init__(self):
-            if self.word is None or self.card_text is None or self.image_url is None or self.image_path is None:
-                raise ValueError("Attributes cannot be None")
-            if self.word == "":
-                raise ValueError("Word cannot be empty")
-            if self.card_text == "":
-                raise ValueError("Card text cannot be empty")
-            if self.image_url == "":
-                raise ValueError("Image URL cannot be empty")
-            if self.image_path == "":
-                raise ValueError("Paths cannot be empty")
+        if self.word is None or self.card_text is None or self.image_url is None or self.image_path is None:
+            raise ValueError("Attributes cannot be None")
+        if self.word == "":
+            raise ValueError("Word cannot be empty")
+        if self.card_text == "":
+            raise ValueError("Card text cannot be empty")
+        if self.image_url == "":
+            raise ValueError("Image URL cannot be empty")
+        if self.image_path == "":
+            raise ValueError("Paths cannot be empty")
 
 
 def serialize_to_json(data):
@@ -52,3 +52,10 @@ def word_to_filename(word: WordWithContext) -> str:
     # Remove all non-alphanumeric characters (except underscores)
     word_cleaned = re.sub(r"[^\w\s]", "", word_cleaned)
     return word_cleaned
+
+
+def cards_to_dict(cards: list[CardRawData]) -> dict[WordWithContext, CardRawData]:
+    cards_dict: dict[WordWithContext, CardRawData] = {}
+    for card in cards:
+        cards_dict[WordWithContext(card.word, "")] = card
+    return cards_dict

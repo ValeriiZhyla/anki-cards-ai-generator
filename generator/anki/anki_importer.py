@@ -14,7 +14,7 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
         if card_raw_data is None:
             raise ValueError(f"No object for word [{word}]. Data structure: [{json.dumps(cards)}]")
         import_result = format_and_import_card(card_raw_data)
-        if 'error' in import_result:
+        if import_result['error']:
             logging.error(f"Error occurred during import of card for word [{word.word}]. Import error: [{import_result['error']}]")
             abort = confirm_action("Do you want to abort processing? If no, the processing will be resumed and this card will be skipped")
             if abort:

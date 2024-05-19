@@ -6,7 +6,7 @@ from generator.entities import WordWithContext, CardRawData
 from generator.input import read_input_file
 from generator.anki import anki_importer
 from generator.config import Config
-from generator import generate_cards
+from generator import generate_cards, entities
 from generator import validation
 
 
@@ -17,7 +17,7 @@ def process_existing_cards(input_words: list[WordWithContext]):
     existing_cards: list[CardRawData] = generator.input.file_operations.cards_in_directory(Config.PROCESSING_DIRECTORY_PATH)
     existing_cards_filtered: list[CardRawData] = [card for card in existing_cards if card.word in input_words_without_context]
     existing_cards_validated: list[CardRawData] = validation.discard_invalid_cards(Config.PROCESSING_DIRECTORY_PATH, existing_cards_filtered)
-    existing_cards_data: dict[WordWithContext, CardRawData] = validation.cards_to_dict(existing_cards_validated)
+    existing_cards_data: dict[WordWithContext, CardRawData] = entities.cards_to_dict(existing_cards_validated)
     anki_importer.import_card_collection(existing_cards_data)
     logging.info("All existing cards processed")
 

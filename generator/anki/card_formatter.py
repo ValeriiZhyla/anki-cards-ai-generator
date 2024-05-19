@@ -24,7 +24,7 @@ def format(card_data: CardRawData, deck_name: str):
             "Back": back_content
         },
         "options": {
-            "allowDuplicate": False,
+            "allowDuplicate": True,
             "duplicateScope": "deck"
         },
         "tags": []

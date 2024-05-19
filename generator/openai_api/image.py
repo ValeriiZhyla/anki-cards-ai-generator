@@ -18,7 +18,7 @@ The image should not directly label or highlight the keyword unless it’s cruci
 I will send you a word or phrase and the text, generated for this word and used in the card.
 WORD: [target word]; CARD TEXT: [text]
 
-Specify, that under no circumstances should there be text in the picture.
+Specify, that under no circumstances should there be text in the picture in any form. No text on signs, books, labels etc.
 
 Use only the main context from the card in the text, it should be the first used context from the card text.
 
@@ -36,7 +36,7 @@ You have to create a prompt, which will be accepted by DALLE-3.
 
 
 def chat_generate_dalle_prompt(word_with_context: WordWithContext, card_text) -> str:
-    logging.info(f"DALLE prompt generation: processing word [{word_with_context}]")
+    logging.info(f"DALLE prompt generation: processing word [{word_with_context.word}]")
     logging.debug(f"DALLE prompt generation: processing card text [{card_text}]")
 
     messages = [
@@ -77,5 +77,5 @@ def chat_generate_image(prompt: str) -> str:
     )
 
     image_url = response.data[0].url
-    logging.info(f"DALLE generated image URL: {image_url}")
+    logging.debug(f"DALLE generated image URL: {image_url}")
     return image_url

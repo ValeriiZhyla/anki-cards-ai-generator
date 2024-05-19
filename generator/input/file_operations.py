@@ -58,3 +58,12 @@ def copy_image_to_media_directory(image_path):
     target_image_path = os.path.join(Config.ANKI_MEDIA_DIRECTORY, image_filename)
     shutil.copy(image_path, target_image_path)
     logging.info(f"Image [{image_filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+
+
+def file_exists_and_has_bytes(file_path):
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # Check if the file is not empty (has bytes)
+        if os.path.getsize(file_path) > 0:
+            return True
+    return False

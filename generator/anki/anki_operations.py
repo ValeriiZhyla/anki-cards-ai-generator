@@ -40,6 +40,7 @@ def check_card_exists(deck_name, search_term):
 
 
 def delete_card_from_deck(deck_name, search_term):
+    logging.info(f"Deleting card [{search_term}] from deck [{deck_name}]")
     query = f'"deck:{deck_name}" "{search_term}"'
     card_ids = find_cards(query)
     if not card_ids:
@@ -60,7 +61,7 @@ def find_cards(query):
 
 
 def delete_cards(card_ids):
-    return invoke('deleteCards', {'cards': card_ids})
+    return invoke('deleteNotes', {'notes': card_ids})
 
 
 def invoke(action, params=None):

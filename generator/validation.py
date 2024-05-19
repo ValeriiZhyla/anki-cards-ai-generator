@@ -2,18 +2,19 @@ import logging
 import os
 
 import generator.anki.anki_operations
-from generator.anki import anki_importer
+from generator.anki import anki_importer, anki_operations
 from generator.entities import WordWithContext, CardRawData
+from generator.input import file_operations
 from generator.input.file_operations import generate_card_data_path
 from generator.input.confirm import confirm_action
 
 
 def check_whether_deck_exists(deck_name):
-    deck_exists = generator.anki.anki_operations.check_deck_exists(deck_name)
+    deck_exists = anki_operations.check_deck_exists(deck_name)
     if not deck_exists:
         confirmation = confirm_action(f"Deck {deck_name} does not exist. Should it be created? Otherwise the processing will be aborted.")
         if confirmation:
-            generator.anki.anki_operations.create_deck(deck_name)
+            anki_operations.create_deck(deck_name)
         else:
             raise Exception("Can not create deck without the confirmation")
 
@@ -21,12 +22,12 @@ def check_whether_deck_exists(deck_name):
 def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) -> list[WordWithContext]:
     words_to_skip: list[WordWithContext] = []
     for word in words:
-        card_exists = generator.anki.anki_operations.check_card_exists(deck_name, word.word)
+        card_exists = anki_operations.check_card_exists(deck_name, word.word)
         if card_exists:
             confirmation = confirm_action(
                 f"Card for [{word.word}] already exists in the deck [{deck_name}]. Should it be deleted from the deck? Otherwise the word will be skipped.")
             if confirmation:
-                generator.anki.anki_operations.delete_card_from_deck(deck_name, word.word)
+                anki_operations.delete_card_from_deck(deck_name, word.word)
             else:
                 words_to_skip.append(word)
 
@@ -43,7 +44,7 @@ def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRa
     valid_cards: list[CardRawData] = []
     for card in existing_cards:
         image_path = card.image_path
-        if file_exists_and_has_bytes(image_path):
+        if file_operations.file_exists_and_has_bytes(image_path):
             logging.info(f"Image [{image_path}] exists, card for word [{card.word}] is valid")
             valid_cards.append(card)
         else:
@@ -55,17 +56,7 @@ def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRa
     return valid_cards
 
 
-def file_exists_and_has_bytes(file_path):
-    # Check if the file exists
-    if os.path.exists(file_path):
-        # Check if the file is not empty (has bytes)
-        if os.path.getsize(file_path) > 0:
-            return True
-    return False
 
 
-def cards_to_dict(cards: list[CardRawData]) -> dict[WordWithContext, CardRawData]:
-    cards_dict: dict[WordWithContext, CardRawData] = {}
-    for card in cards:
-        cards_dict[WordWithContext(card.word, "")] = card
-    return cards_dict
+
+
