@@ -1,19 +1,19 @@
-import json
 import logging
 import os
 
+import generator.anki.anki_operations
 from generator.anki import anki_importer
 from generator.entities import WordWithContext, CardRawData
-from generator.generate_cards import generate_card_data_path
+from generator.input.file_operations import generate_card_data_path
 from generator.input.confirm import confirm_action
 
 
 def check_whether_deck_exists(deck_name):
-    deck_exists = anki_importer.check_deck_exists(deck_name)
+    deck_exists = generator.anki.anki_operations.check_deck_exists(deck_name)
     if not deck_exists:
         confirmation = confirm_action(f"Deck {deck_name} does not exist. Should it be created? Otherwise the processing will be aborted.")
         if confirmation:
-            anki_importer.create_deck(deck_name)
+            generator.anki.anki_operations.create_deck(deck_name)
         else:
             raise Exception("Can not create deck without the confirmation")
 
@@ -21,12 +21,12 @@ def check_whether_deck_exists(deck_name):
 def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) -> list[WordWithContext]:
     words_to_skip: list[WordWithContext] = []
     for word in words:
-        card_exists = anki_importer.check_card_exists(deck_name, word.word)
+        card_exists = generator.anki.anki_operations.check_card_exists(deck_name, word.word)
         if card_exists:
             confirmation = confirm_action(
                 f"Card for [{word.word}] already exists in the deck [{deck_name}]. Should it be deleted from the deck? Otherwise the word will be skipped.")
             if confirmation:
-                anki_importer.delete_card_from_deck(deck_name, word.word)
+                generator.anki.anki_operations.delete_card_from_deck(deck_name, word.word)
             else:
                 words_to_skip.append(word)
 
@@ -37,25 +37,6 @@ def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) ->
     else:
         logging.info(f"All words will be processed")
     return words_to_process
-
-
-def cards_in_directory(processing_directory: str) -> list[CardRawData]:
-    return read_json_files_as_objects(processing_directory)
-
-
-def list_json_files(directory):
-    return [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith('.json')]
-
-
-def read_json_files_as_objects(directory):
-    files = list_json_files(directory)
-    objects = []
-    for file_path in files:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            obj = CardRawData(**data)
-            objects.append(obj)
-    return objects
 
 
 def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRawData]) -> list[CardRawData]:

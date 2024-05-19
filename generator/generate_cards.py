@@ -1,13 +1,9 @@
-import json
 import logging
-import os
-import re
 import time
-
-import requests
 
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawData, serialize_to_json
+from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image
 from generator.openai_api import image, text
 from generator.input.confirm import confirm_action
 
@@ -61,37 +57,3 @@ def wait_after_word_processing():
     sleep_seconds = Config.SECONDS_WAIT_BETWEEN_DALLE_CALLS
     logging.info(f"Waiting [{sleep_seconds}] seconds after word processing (API RPM)")
     time.sleep(sleep_seconds)
-
-
-def download_and_save_image(url, image_path):
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(image_path, 'wb') as f:
-            f.write(response.content)
-        logging.info(f"Image saved as {image_path}")
-    else:
-        raise IOError(f"Failed to retrieve image from URL: {url}. Status code: {response.status_code}")
-
-
-def save_text(content: str, path):
-    with open(path, 'w', encoding='utf-8') as file:
-        file.write(content)
-    logging.debug(f"Text saved as {path}")
-
-
-def generate_image_path(processing_directory_path: str, word: WordWithContext):
-    return os.path.join(processing_directory_path, word_to_filename(word) + ".png")
-
-
-def generate_card_data_path(processing_directory_path, word):
-    return os.path.join(processing_directory_path, word_to_filename(word) + ".json")
-
-
-def word_to_filename(word: WordWithContext) -> str:
-    # convert to lower case
-    word_cleaned = str.lower(word.word)
-    # Replace all spaces with underscores
-    word_cleaned = re.sub(r"\s+", "_", word_cleaned)
-    # Remove all non-alphanumeric characters (except underscores)
-    word_cleaned = re.sub(r"[^\w\s]", "", word_cleaned)
-    return word_cleaned

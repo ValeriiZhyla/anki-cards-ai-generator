@@ -1,4 +1,5 @@
 import json
+import re
 from dataclasses import dataclass, asdict
 
 
@@ -41,3 +42,13 @@ def serialize_to_json(data):
     data_dict = asdict(data)
     # Serialize dictionary to JSON
     return json.dumps(data_dict, indent=4)
+
+
+def word_to_filename(word: WordWithContext) -> str:
+    # convert to lower case
+    word_cleaned = str.lower(word.word)
+    # Replace all spaces with underscores
+    word_cleaned = re.sub(r"\s+", "_", word_cleaned)
+    # Remove all non-alphanumeric characters (except underscores)
+    word_cleaned = re.sub(r"[^\w\s]", "", word_cleaned)
+    return word_cleaned
