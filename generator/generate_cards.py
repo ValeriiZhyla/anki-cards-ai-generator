@@ -9,6 +9,7 @@ import requests
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawData, serialize_to_json
 from generator.openai_api import image, text
+from generator.validation import confirm_action
 
 logger = logging.getLogger()
 
@@ -22,9 +23,17 @@ def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWith
     words_cards: dict[WordWithContext, CardRawData] = {}
 
     for word_with_context in input_words:
-        card_raw = create_card_for_word(word_with_context)
-        words_cards[word_with_context] = card_raw
-        logger.info(f"Word [{word_with_context.word}] processed")
+        try:
+            card_raw = create_card_for_word(word_with_context)
+            words_cards[word_with_context] = card_raw
+            logger.info(f"Word [{word_with_context.word}] processed")
+        except Exception as e:
+            logger.error(f"Failed to process word [{word_with_context.word}] due to {e}")
+            abort = confirm_action("Do you want to abort processing? If no, the processing will be resumed and this card will be skipped")
+            if abort:
+                raise Exception(f"Aborting processing after error: [{e}]")
+            else:
+                logger.warning(f"Word [{word_with_context.word}] will be skipped")
         words_remaining -= 1
         if words_remaining > 0:
             wait_after_word_processing()
@@ -78,6 +87,7 @@ def generate_image_path(processing_directory_path: str, word: WordWithContext):
 
 def generate_card_data_path(processing_directory_path, word):
     return os.path.join(processing_directory_path, word_to_filename(word) + ".json")
+
 
 def word_to_filename(word: WordWithContext) -> str:
     # convert to lower case

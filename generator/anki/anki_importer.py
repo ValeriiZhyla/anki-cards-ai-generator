@@ -21,7 +21,7 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
         import_result = format_and_import_card(card_raw_data)
         if 'error' in import_result:
             logger.error(f"Error occurred during import of card for word [{word.word}]. Import error: [{import_result['error']}]")
-            abort = confirm_action("Do you want to proceed? If no, the processing will be aborted")
+            abort = confirm_action("Do you want to abort processing? If no, the processing will be resumed and this card will be skipped")
             if abort:
                 raise Exception(f"Aborting processing after error: [{import_result['error']}]")
             else:
