@@ -6,28 +6,42 @@ import pandas as pd
 from generator.entities import WordWithContext
 
 
-def read_csv_file(file_path: str) -> list[WordWithContext]:
+def normalize_columns(df):
+    """Normalize all column names to lowercase."""
+    df.columns = [col.lower() for col in df.columns]
+    return df
+
+
+def check_columns(df):
+    required_columns = {'word', 'context'}
+    if not required_columns.issubset(df.columns):
+        missing_cols = required_columns - set(df.columns)
+        raise ValueError(f"Missing required columns: {', '.join(missing_cols)}")
+    logging.info("All required columns are present")
+
+
+def read_from_dataframe(df) -> list[WordWithContext]:
     words_with_context = []
-    df = pd.read_csv(file_path, delimiter=";")
+    df = normalize_columns(df)
+    check_columns(df)
     for index, row in df.iterrows():
-        if not row['Word'] or row['Word'].strip() == "":
+        if not row['word'] or row['word'].strip() == "":
             continue
-        word = row['Word'].strip()
-        context = row['Context'].strip() if 'Context' in row and not pd.isna(row['Context']) else ""
+        word = row['word'].strip()
+        context = row['context'].strip() if 'context' in row and not pd.isna(row['context']) else ""
         words_with_context.append(WordWithContext(word, context))
     return words_with_context
+
+
+def read_csv_file(file_path: str) -> list[WordWithContext]:
+    df = pd.read_csv(file_path, delimiter=";")
+    return read_from_dataframe(df)
 
 
 def read_excel_file(file_path: str) -> list[WordWithContext]:
-    words_with_context = []
     df = pd.read_excel(file_path, engine='openpyxl')
-    for index, row in df.iterrows():
-        if not row['Word'] or row['Word'].strip() == "":
-            continue
-        word = row['Word'].strip()
-        context = row['Context'].strip() if 'Context' in row and not pd.isna(row['Context']) else ""
-        words_with_context.append(WordWithContext(word, context))
-    return words_with_context
+    return read_from_dataframe(df)
+
 
 def read_file_based_on_extension(file_path: str) -> list[WordWithContext]:
     # Check if file exists before proceeding

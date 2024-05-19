@@ -5,7 +5,6 @@ import shutil
 
 import requests
 
-from generator.anki.anki_importer import logger
 from generator.config import Config
 
 from generator.entities import CardRawData, WordWithContext, word_to_filename
@@ -58,4 +57,4 @@ def copy_image_to_media_directory(image_path):
     image_filename = os.path.basename(image_path)
     target_image_path = os.path.join(Config.ANKI_MEDIA_DIRECTORY, image_filename)
     shutil.copy(image_path, target_image_path)
-    logger.info(f"Image [{image_filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+    logging.info(f"Image [{image_filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
