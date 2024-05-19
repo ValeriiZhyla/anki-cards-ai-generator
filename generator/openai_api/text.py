@@ -49,11 +49,9 @@ anki_examples_strings = [f"Word: {word}; Card Example: {anki_examples[word]};\n"
 
 anki_full_prompt = anki_prompt_preamble + ''.join(anki_examples_strings)
 
-logger = logging.getLogger()
-
 
 def chat_generate_text(word_with_context: WordWithContext) -> str:
-    logger.info(f"ChatGPT card text: processing word [{word_with_context.word}] with context [{word_with_context.context}]")
+    logging.info(f"ChatGPT card text: processing word [{word_with_context.word}] with context [{word_with_context.context}]")
 
     messages = [
         {"role": "system", "content": f"{anki_full_prompt}"},
@@ -64,7 +62,7 @@ def chat_generate_text(word_with_context: WordWithContext) -> str:
         api_key=Config.OPENAI_API_KEY
     )
 
-    logger.debug(f"ChatGPT card generation messages {messages}")
+    logging.debug(f"ChatGPT card generation messages {messages}")
 
     response = client.chat.completions.create(
         # input prompt
@@ -79,6 +77,6 @@ def chat_generate_text(word_with_context: WordWithContext) -> str:
     )
 
     generated_text = response.choices[0].message.content
-    logger.debug(f"ChatGPT generated card text for word {word_with_context.word}")
-    logger.debug(f"ChatGPT card text: {generated_text}")
+    logging.debug(f"ChatGPT generated card text for word {word_with_context.word}")
+    logging.debug(f"ChatGPT card text: {generated_text}")
     return generated_text

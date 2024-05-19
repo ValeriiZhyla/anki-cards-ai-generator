@@ -8,7 +8,7 @@ import requests
 from ..anki import card_formatter
 from ..config import Config
 from ..entities import CardRawData, WordWithContext
-from ..validation import confirm_action
+from ..input.confirm import confirm_action
 
 logger = logging.getLogger()
 

@@ -34,12 +34,10 @@ Exclude any sexual or suggestive content, especially those involving minors.
 You have to create a prompt, which will be accepted by DALLE-3.
 """
 
-logger = logging.getLogger()
-
 
 def chat_generate_dalle_prompt(word_with_context: WordWithContext, card_text) -> str:
-    logger.info(f"DALLE prompt generation: processing word [{word_with_context}]")
-    logger.debug(f"DALLE prompt generation: processing card text [{card_text}]")
+    logging.info(f"DALLE prompt generation: processing word [{word_with_context}]")
+    logging.debug(f"DALLE prompt generation: processing card text [{card_text}]")
 
     messages = [
         {"role": "system", "content": f"{anki_prompt_preamble}"},
@@ -49,7 +47,7 @@ def chat_generate_dalle_prompt(word_with_context: WordWithContext, card_text) ->
         api_key=Config.OPENAI_API_KEY
     )
 
-    logger.debug(f"DALLE prompt generation messages {messages}")
+    logging.debug(f"DALLE prompt generation messages {messages}")
     response = client.chat.completions.create(
         # input prompt
         messages=messages,
@@ -63,12 +61,12 @@ def chat_generate_dalle_prompt(word_with_context: WordWithContext, card_text) ->
     )
 
     generated_text = response.choices[0].message.content
-    logger.info(f"Generated DALLE prompt: {generated_text}")
+    logging.info(f"Generated DALLE prompt: {generated_text}")
     return generated_text
 
 
 def chat_generate_image(prompt: str) -> str:
-    logger.debug(f"DALLE image generation prompt [{prompt}]")
+    logging.debug(f"DALLE image generation prompt [{prompt}]")
 
     response = client.images.generate(
         model="dall-e-3",
@@ -79,5 +77,5 @@ def chat_generate_image(prompt: str) -> str:
     )
 
     image_url = response.data[0].url
-    logger.info(f"DALLE generated image URL: {image_url}")
+    logging.info(f"DALLE generated image URL: {image_url}")
     return image_url

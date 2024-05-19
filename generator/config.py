@@ -88,9 +88,9 @@ class Config:
         try:
             response = requests.get(cls.ANKI_CONNECT_URL)
             if response.status_code == 200:
-                logging.info("AnkiConnect is running.")
+                logging.info("AnkiConnect is running")
             else:
                 raise IOError("AnkiConnect is installed but returned a non-OK status code:", response.status_code)
         except requests.exceptions.ConnectionError:
-            raise IOError("Failed to connect to AnkiConnect. It might not be running.")
+            raise IOError("Failed to connect to AnkiConnect. It might be not running")
 
