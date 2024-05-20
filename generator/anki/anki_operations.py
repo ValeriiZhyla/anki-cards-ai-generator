@@ -49,7 +49,7 @@ def delete_card_from_deck(deck_name, search_term):
 
     delete_result = delete_cards(card_ids)
     if delete_result.get('error') is None:
-        logging.info(f"Successfully deleted card for {search_term}")
+        logging.info(f"Successfully deleted card for [{search_term}]")
         return True
     else:
         logging.error(f"Failed to delete cards: {delete_result.get('error')}")
@@ -62,6 +62,25 @@ def find_cards(query):
 
 def delete_cards(card_ids):
     return invoke('deleteNotes', {'notes': card_ids})
+
+
+def get_card_ids_from_deck(deck_name):
+    return invoke('findCards', {'query': f'deck:"{deck_name}"'})
+
+
+def get_card_info(card_ids):
+    return invoke('cardsInfo', {'cards': card_ids})
+
+
+def get_all_words_from_deck(deck_name) -> list[str]:
+    card_ids = get_card_ids_from_deck(deck_name)['result']
+    if not card_ids:
+        logging.info(f"No cards found in deck '{deck_name}'.")
+        return []
+
+    cards_info = get_card_info(card_ids)['result']
+    words = [card['fields']['Front']['value'] for card in cards_info]
+    return words
 
 
 def invoke(action, params=None):
