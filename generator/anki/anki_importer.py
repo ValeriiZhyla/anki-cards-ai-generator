@@ -6,7 +6,7 @@ from ..anki import card_formatter
 from ..config import Config
 from ..entities import CardRawData, WordWithContext
 from ..input.confirm import confirm_action
-from ..input.file_operations import copy_image_to_media_directory
+from ..input.file_operations import copy_to_media_directory
 
 def import_card_collection(cards: dict[WordWithContext, CardRawData]):
     for word in cards:
@@ -26,6 +26,7 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
 
 def format_and_import_card(card_data: CardRawData):
     note = card_formatter.format(card_data, Config.DECK_NAME)
-    copy_image_to_media_directory(card_data.image_path)
+    copy_to_media_directory(card_data.image_path)
+    copy_to_media_directory(card_data.audio_path)
     result = invoke('addNote', {'note': note})
     return result

@@ -13,7 +13,7 @@ def create_cambridge_link_if_exists(word_or_phrase: str) -> str | None:
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            logging.info(f"Cambridge Dictionary Page exists for '{word_or_phrase}': {url}")
+            logging.info(f"Cambridge Dictionary page exists for '{word_or_phrase}': {url}")
             return url
         else:
             logging.warning(f"No Cambridge Dictionary entry found for '{word_or_phrase}'.")

@@ -43,12 +43,12 @@ def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) ->
 def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRawData]) -> list[CardRawData]:
     valid_cards: list[CardRawData] = []
     for card in existing_cards:
-        image_path = card.image_path
-        if file_operations.file_exists_and_has_bytes(image_path):
-            logging.info(f"Image [{image_path}] exists, card for word [{card.word}] is valid")
+        required_files: list[str] = [card.audio_path, card.image_path]
+        if file_operations.all_files_exist_and_are_not_empty(required_files):
+            logging.info(f"All files from [{required_files}] exist, card for word [{card.word}] is valid")
             valid_cards.append(card)
         else:
-            logging.info(f"Image [{image_path}] does not exist, card for word [{card.word}] is not valid")
+            logging.info(f"Some files from [{required_files}] does not exist, card for word [{card.word}] is not valid")
             confirmation = confirm_action(f"Card for [{card.word}] is invalid. Should the card file be deleted? Otherwise the processing will be aborted.")
             if confirmation:
                 file_path = generate_card_data_path(processing_directory, card.word)

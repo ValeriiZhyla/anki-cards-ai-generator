@@ -22,18 +22,21 @@ class CardRawData:
     image_prompt: str
     image_url: str
     image_path: str
+    audio_path: str
+    dictionary_url: str = None
     version: int = 1
 
     def __post_init__(self):
-        if self.word is None or self.card_text is None or self.image_url is None or self.image_path is None:
-            raise ValueError("Attributes cannot be None")
+        not_nullable = [self.word, self.card_text, self.image_url, self.image_path]
+        if None in not_nullable:
+            raise ValueError(f"Attributes cannot be None: {serialize_to_json(self)}")
         if self.word == "":
             raise ValueError("Word cannot be empty")
         if self.card_text == "":
             raise ValueError("Card text cannot be empty")
         if self.image_url == "":
             raise ValueError("Image URL cannot be empty")
-        if self.image_path == "":
+        if self.audio_path == "" or self.image_path == "":
             raise ValueError("Paths cannot be empty")
 
 

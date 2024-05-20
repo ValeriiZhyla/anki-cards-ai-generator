@@ -35,12 +35,16 @@ def save_text(content: str, path):
     logging.debug(f"Text saved as {path}")
 
 
-def generate_image_path(processing_directory_path: str, word: WordWithContext):
+def generate_image_path(processing_directory_path: str, word: WordWithContext) -> str:
     return os.path.join(processing_directory_path, word_to_filename(word) + ".png")
 
 
-def generate_card_data_path(processing_directory_path, word):
+def generate_card_data_path(processing_directory_path, word) -> str:
     return os.path.join(processing_directory_path, word_to_filename(word) + ".json")
+
+
+def generate_audio_path(processing_directory_path: str, word: WordWithContext) -> str:
+    return os.path.join(processing_directory_path, word_to_filename(word) + ".mp3")
 
 
 def download_and_save_image(url, image_path):
@@ -53,11 +57,27 @@ def download_and_save_image(url, image_path):
         raise IOError(f"Failed to retrieve image from URL: {url}. Status code: {response.status_code}")
 
 
-def copy_image_to_media_directory(image_path):
-    image_filename = os.path.basename(image_path)
-    target_image_path = os.path.join(Config.ANKI_MEDIA_DIRECTORY, image_filename)
-    shutil.copy(image_path, target_image_path)
-    logging.info(f"Image [{image_filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+def copy_to_media_directory(file_path):
+    filename = os.path.basename(file_path)
+    target_file_path = os.path.join(Config.ANKI_MEDIA_DIRECTORY, filename)
+    shutil.copy(file_path, target_file_path)
+    if filename.endswith(".png"):
+        logging.info(f"Image [{filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+    elif filename.endswith(".mp3"):
+        logging.info(f"Audio file [{filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+    else:
+        logging.info(f"File [{filename}] copied to [{Config.ANKI_MEDIA_DIRECTORY}]")
+
+
+def all_files_exist_and_are_not_empty(required_files: list[str]) -> bool:
+    present_required_files: int = 0
+    for required_file in required_files:
+        if file_exists_and_has_bytes(required_file):
+            logging.info(f"File [{required_file}] exists")
+            present_required_files += 1
+        else:
+            logging.warning(f"File [{required_file}] does not exist or is empty")
+    return present_required_files == len(required_files)
 
 
 def file_exists_and_has_bytes(file_path):

@@ -1,9 +1,10 @@
 import logging
 import time
 
+from generator.api_calls import openai_audio, cambridge_dictionary
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawData, serialize_to_json
-from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image
+from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image, generate_audio_path
 from generator.openai_api import image, text
 from generator.input.confirm import confirm_action
 
@@ -46,7 +47,20 @@ def create_card_for_word(word_with_context) -> CardRawData:
     download_and_save_image(image_url, image_path)
     logging.info(f"Card image is saved as [{image_path}]")
 
-    card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text, image_prompt=image_prompt, image_url=image_url, image_path=image_path)
+    audio_path = generate_audio_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
+    openai_audio.chat_generate_and_save_audio(word_with_context.word, audio_path)
+    logging.info(f"Card audio is saved as [{audio_path}]")
+
+    dictionary_url = cambridge_dictionary.create_cambridge_link_if_exists(word_with_context.word)
+    if dictionary_url:
+        logging.info(f"Dictionary url is created")
+    else:
+        logging.warning(f"Dictionary url is not created")
+
+    card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text,
+                                        image_prompt=image_prompt, image_url=image_url, image_path=image_path,
+                                        audio_path=audio_path,
+                                        dictionary_url=dictionary_url)
     card_data_path = generate_card_data_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     save_text(serialize_to_json(card_raw), card_data_path)
     logging.info(f"Card data is saved as [{card_data_path}]")

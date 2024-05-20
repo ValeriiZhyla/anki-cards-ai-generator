@@ -1,6 +1,9 @@
+import logging
+
 from openai import OpenAI
 
 from generator.config import Config
+from generator.entities import WordWithContext
 
 
 def chat_generate_and_save_audio(word: str, target_file_path: str):
