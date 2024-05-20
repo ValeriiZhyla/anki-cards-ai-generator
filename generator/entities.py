@@ -16,7 +16,7 @@ class WordWithContext:
 
 
 @dataclass(frozen=True)
-class CardRawData:
+class CardRawDataV1:
     word: str
     card_text: str
     image_prompt: str
@@ -57,8 +57,8 @@ def word_to_filename(word: WordWithContext) -> str:
     return word_cleaned
 
 
-def cards_to_dict(cards: list[CardRawData]) -> dict[WordWithContext, CardRawData]:
-    cards_dict: dict[WordWithContext, CardRawData] = {}
+def cards_to_dict(cards: list[CardRawDataV1]) -> dict[WordWithContext, CardRawDataV1]:
+    cards_dict: dict[WordWithContext, CardRawDataV1] = {}
     for card in cards:
         cards_dict[WordWithContext(card.word, "")] = card
     return cards_dict

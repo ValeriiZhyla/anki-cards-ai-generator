@@ -1,21 +1,20 @@
 import logging
 import time
 
-from generator.api_calls import openai_audio, cambridge_dictionary
+from generator.api_calls import openai_image, openai_text, openai_audio, cambridge_dictionary
 from generator.config import Config
-from generator.entities import WordWithContext, CardRawData, serialize_to_json
+from generator.entities import WordWithContext, CardRawDataV1, serialize_to_json
 from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image, generate_audio_path
-from generator.openai_api import image, text
 from generator.input.confirm import confirm_action
 
 
-def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawData]:
+def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawDataV1]:
     words_total = len(input_words)
     words_remaining = words_total
 
     logging.info(f"Starting generation of text and images for {words_total} words {list(map(lambda entry: entry.word, input_words))}")
     # TODO add audio to the word on the front.
-    words_cards: dict[WordWithContext, CardRawData] = {}
+    words_cards: dict[WordWithContext, CardRawDataV1] = {}
 
     for word_with_context in input_words:
         try:
@@ -35,12 +34,12 @@ def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWith
     return words_cards
 
 
-def create_card_for_word(word_with_context) -> CardRawData:
-    card_text = text.chat_generate_text(word_with_context)
+def create_card_for_word(word_with_context) -> CardRawDataV1:
+    card_text = openai_text.chat_generate_text(word_with_context)
     logging.info("Card text is created")
 
-    image_prompt = image.chat_generate_dalle_prompt(word_with_context, card_text)
-    image_url = image.chat_generate_image(image_prompt)
+    image_prompt = openai_image.chat_generate_dalle_prompt(word_with_context, card_text)
+    image_url = openai_image.chat_generate_image(image_prompt)
     logging.info("Card Image is created")
 
     image_path = generate_image_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
@@ -57,10 +56,10 @@ def create_card_for_word(word_with_context) -> CardRawData:
     else:
         logging.warning(f"Dictionary url is not created")
 
-    card_raw: CardRawData = CardRawData(word=word_with_context.word, card_text=card_text,
-                                        image_prompt=image_prompt, image_url=image_url, image_path=image_path,
-                                        audio_path=audio_path,
-                                        dictionary_url=dictionary_url)
+    card_raw: CardRawDataV1 = CardRawDataV1(word=word_with_context.word, card_text=card_text,
+                                            image_prompt=image_prompt, image_url=image_url, image_path=image_path,
+                                            audio_path=audio_path,
+                                            dictionary_url=dictionary_url)
     card_data_path = generate_card_data_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     save_text(serialize_to_json(card_raw), card_data_path)
     logging.info(f"Card data is saved as [{card_data_path}]")

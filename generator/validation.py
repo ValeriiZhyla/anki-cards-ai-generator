@@ -3,7 +3,7 @@ import os
 
 import generator.anki.anki_operations
 from generator.anki import anki_importer, anki_operations
-from generator.entities import WordWithContext, CardRawData
+from generator.entities import WordWithContext, CardRawDataV1
 from generator.input import file_operations
 from generator.input.file_operations import generate_card_data_path
 from generator.input.confirm import confirm_action
@@ -40,8 +40,8 @@ def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) ->
     return words_to_process
 
 
-def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRawData]) -> list[CardRawData]:
-    valid_cards: list[CardRawData] = []
+def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRawDataV1]) -> list[CardRawDataV1]:
+    valid_cards: list[CardRawDataV1] = []
     for card in existing_cards:
         required_files: list[str] = [card.audio_path, card.image_path]
         if file_operations.all_files_exist_and_are_not_empty(required_files):

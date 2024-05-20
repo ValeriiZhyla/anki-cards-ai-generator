@@ -7,10 +7,10 @@ import requests
 
 from generator.config import Config
 
-from generator.entities import CardRawData, WordWithContext, word_to_filename
+from generator.entities import CardRawDataV1, WordWithContext, word_to_filename
 
 
-def cards_in_directory(processing_directory: str) -> list[CardRawData]:
+def cards_in_directory(processing_directory: str) -> list[CardRawDataV1]:
     return read_json_files_as_objects(processing_directory)
 
 
@@ -24,7 +24,7 @@ def read_json_files_as_objects(directory):
     for file_path in files:
         with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
-            obj = CardRawData(**data)
+            obj = CardRawDataV1(**data)
             objects.append(obj)
     return objects
 

@@ -4,11 +4,11 @@ import logging
 from .anki_operations import invoke
 from ..anki import card_formatter
 from ..config import Config
-from ..entities import CardRawData, WordWithContext
+from ..entities import CardRawDataV1, WordWithContext
 from ..input.confirm import confirm_action
 from ..input.file_operations import copy_to_media_directory
 
-def import_card_collection(cards: dict[WordWithContext, CardRawData]):
+def import_card_collection(cards: dict[WordWithContext, CardRawDataV1]):
     for word in cards:
         card_raw_data = cards[word]
         if card_raw_data is None:
@@ -24,7 +24,7 @@ def import_card_collection(cards: dict[WordWithContext, CardRawData]):
         logging.info(f"Card for word [{word.word}] imported in deck [{Config.DECK_NAME}]")
 
 
-def format_and_import_card(card_data: CardRawData):
+def format_and_import_card(card_data: CardRawDataV1):
     note = card_formatter.format(card_data, Config.DECK_NAME)
     copy_to_media_directory(card_data.image_path)
     copy_to_media_directory(card_data.audio_path)

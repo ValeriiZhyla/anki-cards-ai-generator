@@ -1,9 +1,9 @@
 import os
 
-from ..entities import CardRawData
+from ..entities import CardRawDataV1
 
 
-def format(card_data: CardRawData, deck_name: str):
+def format(card_data: CardRawDataV1, deck_name: str):
     # Ensure sentences end with a new line in HTML and handle text styling
     formatted_text = card_data.card_text.replace('. ', '.<br>')
     # TODO make nice-looking card!
