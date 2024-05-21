@@ -1,15 +1,29 @@
 import logging
 import os
 
-import generator.anki.anki_operations
-from generator.anki import anki_importer, anki_operations
+import requests
+
+from generator.anki import anki_operations
+from generator.config import Config
 from generator.entities import WordWithContext, CardRawDataV1
 from generator.input import file_operations
-from generator.input.file_operations import generate_card_data_path
 from generator.input.confirm import confirm_action
+from generator.input.file_operations import generate_card_data_path
 
 
-def check_whether_deck_exists(deck_name):
+def check_anki_connect():
+    try:
+        response = requests.get(Config.ANKI_CONNECT_URL)
+        if response.status_code == 200:
+            logging.info("AnkiConnect is running")
+        else:
+            raise IOError("AnkiConnect is installed but returned a non-OK status code:", response.status_code)
+    except requests.exceptions.ConnectionError:
+        raise IOError("Failed to connect to AnkiConnect. It might be not running")
+
+
+def check_whether_deck_exists():
+    deck_name = Config.DECK_NAME
     deck_exists = anki_operations.check_deck_exists(deck_name)
     if not deck_exists:
         confirmation = confirm_action(f"Deck {deck_name} does not exist. Should it be created? Otherwise the processing will be aborted.")
@@ -54,9 +68,3 @@ def discard_invalid_cards(processing_directory: str, existing_cards: list[CardRa
                 file_path = generate_card_data_path(processing_directory, card.word)
                 os.remove(file_path)
     return valid_cards
-
-
-
-
-
-

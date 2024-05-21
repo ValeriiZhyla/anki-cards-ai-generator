@@ -83,14 +83,3 @@ class Config:
             raise EnvironmentError(f"Unknown OS [{os.name}]")
         logging.info(f"Use default anki media directory [{cls.ANKI_MEDIA_DIRECTORY}]")
 
-    @classmethod
-    def check_anki_connect(cls):
-        try:
-            response = requests.get(cls.ANKI_CONNECT_URL)
-            if response.status_code == 200:
-                logging.info("AnkiConnect is running")
-            else:
-                raise IOError("AnkiConnect is installed but returned a non-OK status code:", response.status_code)
-        except requests.exceptions.ConnectionError:
-            raise IOError("Failed to connect to AnkiConnect. It might be not running")
-

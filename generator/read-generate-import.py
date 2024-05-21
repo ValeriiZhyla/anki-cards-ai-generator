@@ -10,7 +10,7 @@ from generator import generate_cards, entities
 from generator import validation
 
 
-def process_existing_cards(input_words: list[WordWithContext]):
+def process_existing_cards(input_words: list[WordWithContext]) -> list[str]:
     filtered_words: list[WordWithContext] = validation.filter_words_are_present_in_deck(Config.DECK_NAME, input_words)
     input_words_without_context: list[str] = list(map(lambda word_with_context: word_with_context.word, filtered_words))
 
@@ -22,6 +22,9 @@ def process_existing_cards(input_words: list[WordWithContext]):
     anki_importer.import_card_collection(existing_cards_data)
     logging.info("All existing cards processed")
 
+    imported_existing_words: list[str] = [item.word for item in existing_cards_data.keys()]
+    return imported_existing_words
+
 
 def process_new_cards(input_words: list[WordWithContext]):
     filtered_words: list[WordWithContext] = validation.filter_words_are_present_in_deck(Config.DECK_NAME, input_words)
@@ -29,6 +32,13 @@ def process_new_cards(input_words: list[WordWithContext]):
     logging.info("Card generation completed")
     anki_importer.import_card_collection(generated_cards_data)
     logging.info("Import in Anki completed")
+
+
+def exclude_imported_words(input_words, imported_existing_words) -> list[WordWithContext]:
+    if len(imported_existing_words) >= 1:
+        logging.info(f"Words {imported_existing_words} are imported from existing files and are excluded from further processing")
+        return list(filter(lambda word_with_context: word_with_context.word not in imported_existing_words, input_words))
+    return input_words
 
 
 def main():
@@ -53,16 +63,17 @@ def main():
     Config.set_anki_deck_name_or_use_default(args.deck_name)
     Config.set_anki_media_directory_or_use_default(args.anki_media_directory_path)
     Config.set_processing_directory_path(args.processing_directory)
-    Config.check_anki_connect()
 
     # validate environment and read inputs
-    validation.check_whether_deck_exists(Config.DECK_NAME)
+    validation.check_anki_connect()
+    validation.check_whether_deck_exists()
     input_words: list[WordWithContext] = read_input_file.read_file_based_on_extension(args.input_file)
 
     # Processing
-    process_existing_cards(input_words)
+    imported_existing_words: list[str] = process_existing_cards(input_words)
     logging.info("Existing cards processed")
-    process_new_cards(input_words)
+    input_words_except_imported = exclude_imported_words(input_words, imported_existing_words)
+    process_new_cards(input_words_except_imported)
     logging.info("New cards processed")
     logging.info("Processing completed")
 

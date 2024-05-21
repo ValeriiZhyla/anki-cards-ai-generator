@@ -1,0 +1,5 @@
+### GET request to example server
+# @no-redirect
+GET https://dictionary.cambridge.org/dictionary/english/beansxxx
+
+###
