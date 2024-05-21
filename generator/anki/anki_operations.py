@@ -28,7 +28,7 @@ def create_deck(deck_name):
 
 
 def check_card_exists(deck_name, search_term):
-    query = f'"deck:{deck_name}" "{search_term}"'
+    query = f'"deck:{deck_name}" tag:"{search_term}"'
     # Use the invoke method to send a request to AnkiConnect
     result = invoke("findCards", {"query": query})
     if result['result']:
@@ -39,9 +39,9 @@ def check_card_exists(deck_name, search_term):
         return False
 
 
-def delete_card_from_deck(deck_name, search_term):
-    logging.info(f"Deleting card [{search_term}] from deck [{deck_name}]")
-    query = f'"deck:{deck_name}" "{search_term}"'
+def delete_card_from_deck(deck_name, word) -> bool:
+    logging.info(f"Deleting card [{word}] from deck [{deck_name}]")
+    query = f'"deck:{deck_name}" tag:"{word}"'
     card_ids = find_cards(query)
     if not card_ids:
         logging.warning("No cards found with the specified term in the given deck.")
@@ -49,7 +49,7 @@ def delete_card_from_deck(deck_name, search_term):
 
     delete_result = delete_cards(card_ids)
     if delete_result.get('error') is None:
-        logging.info(f"Successfully deleted card for [{search_term}]")
+        logging.info(f"Successfully deleted card for [{word}]")
         return True
     else:
         logging.error(f"Failed to delete cards: {delete_result.get('error')}")
@@ -89,3 +89,8 @@ def invoke(action, params=None):
     request = {'action': action, 'version': 6, 'params': params}
     response = requests.post(Config.ANKI_CONNECT_URL, json=request)
     return response.json()
+
+
+def word_to_tag(word: str) -> str:
+    formatted_word = word.replace(' ', '_').lower()  # Format word for consistent tagging
+    return formatted_word

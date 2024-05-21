@@ -8,6 +8,7 @@ from ..entities import CardRawDataV1, WordWithContext
 from ..input.confirm import confirm_action
 from ..input.file_operations import copy_to_media_directory
 
+
 def import_card_collection(cards: dict[WordWithContext, CardRawDataV1]):
     for word in cards:
         card_raw_data = cards[word]
