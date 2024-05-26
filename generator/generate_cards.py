@@ -23,7 +23,7 @@ def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWith
             words_cards[word_with_context] = card_raw
             logging.info(f"Word [{word_with_context.word}] processed")
         except Exception as e:
-            logging.error(f"Failed to process word [{word_with_context.word}] due to {e}")
+            logging.error(f"Failed to process word [{word_with_context.word}] due to [{e}]")
             abort = confirm_action("Do you want to abort processing? If no, the processing will be resumed and this card will be skipped")
             if abort:
                 raise Exception(f"Aborting processing after error: [{e}]")

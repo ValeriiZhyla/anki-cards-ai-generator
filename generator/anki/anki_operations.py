@@ -27,15 +27,14 @@ def create_deck(deck_name):
         raise Exception(f"An error occurred: {error_msg}")
 
 
-def check_card_exists(deck_name, search_term):
-    query = f'"deck:{deck_name}" tag:"{search_term}"'
-    # Use the invoke method to send a request to AnkiConnect
-    result = invoke("findCards", {"query": query})
-    if result['result']:
-        logging.info(f"Card with name term [{search_term}] exists in deck [{deck_name}]")
+def check_card_exists(deck_name, word):
+    tag = word_to_tag(word)
+    existing_cards = find_all_cards_with_tag(deck_name, tag)
+    if len(existing_cards) >= 1:
+        logging.info(f"Card with tag [{tag}] exists in deck [{deck_name}]")
         return True
     else:
-        logging.debug(f"Card with name term [{search_term}] does not exist in deck [{deck_name}]")
+        logging.debug(f"Card with tag [{tag}] does not exist in deck [{deck_name}]")
         return False
 
 
@@ -54,7 +53,7 @@ def delete_card_from_deck(deck_name: str, word: str) -> bool:
             logging.info(f"Successfully deleted card for [{word}]")
             return True
         else:
-            logging.error(f"Operations thrown no error, but some cards with tag [{tag}] are still in the deck - {remaining_cards}."
+            logging.error(f"Deletion returned no error, but some cards with tag [{tag}] are still in the deck - {remaining_cards}."
                           f" This happens, if a card is in review process. Restart Anki and try again.")
             return False
 

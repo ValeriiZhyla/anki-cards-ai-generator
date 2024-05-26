@@ -18,6 +18,8 @@ The image should not directly label or highlight the keyword unless it’s cruci
 I will send you a word or phrase and the text, generated for this word and used in the card.
 WORD: [target word]; CARD TEXT: [text]
 
+Word can be in english or in other languages. The should can be identified from card text.
+
 Specify, that under no circumstances should there be text in the picture in any form. No text on signs, books, labels etc.
 
 Use only the main context from the card in the text, it should be the first used context from the card text.
