@@ -14,6 +14,9 @@ Dalle call is the most expensive step, 0.05$ pro image. This is expensive compar
 - Sometimes it is really difficult to find an image that describes some abstract content.
 - These images boost (at least mine) learning process a lot
 - 
+## Artifacts
+[![Workflow Name](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml/badge.svg)](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml)
+
 
 ## Card content
 Similar to Cloze cards
