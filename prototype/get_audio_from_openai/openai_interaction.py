@@ -28,5 +28,5 @@ def chat_generate_audio(word: str) -> str:
     return speech_file_path
 
 
-path = chat_generate_audio("mischievous")
+path = chat_generate_audio("Rindfleischkuchen")
 print(path)

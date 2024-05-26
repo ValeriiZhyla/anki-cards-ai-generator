@@ -1,7 +1,8 @@
 import logging
 import time
 
-from generator.api_calls import openai_image, openai_text, openai_audio, cambridge_dictionary
+from generator.api_calls import openai_image, openai_text, openai_audio
+from generator.dictionaries import dictionaries
 from generator.config import Config
 from generator.entities import WordWithContext, CardRawDataV1, serialize_to_json
 from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image, generate_audio_path
@@ -50,7 +51,7 @@ def create_card_for_word(word_with_context) -> CardRawDataV1:
     openai_audio.chat_generate_and_save_audio(word_with_context.word, audio_path)
     logging.info(f"Card audio is saved as [{audio_path}]")
 
-    dictionary_url = cambridge_dictionary.create_cambridge_link_if_exists(word_with_context.word)
+    dictionary_url = dictionaries.create_dictionary_url_if_website_exists(word_with_context.word)
     if dictionary_url:
         logging.info(f"Dictionary url is created")
     else:

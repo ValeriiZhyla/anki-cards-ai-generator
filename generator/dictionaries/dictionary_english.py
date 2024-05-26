@@ -3,7 +3,7 @@ import logging
 import requests
 
 
-def create_cambridge_link_if_exists(word_or_phrase: str) -> str | None:
+def create_cambridge_url_if_website_exists(word_or_phrase: str) -> str | None:
     # Convert spaces to hyphens and lowercase the word for the URL
     formatted_word = '-'.join(word_or_phrase.lower().split())
 
