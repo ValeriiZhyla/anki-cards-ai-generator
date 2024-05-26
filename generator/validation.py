@@ -33,6 +33,11 @@ def check_whether_deck_exists():
             raise Exception("Can not create deck without the confirmation")
 
 
+def check_language():
+    if Config.LANGUAGE not in Config.SUPPORTED_LANGUAGES:
+        raise Exception(f"Language {Config.LANGUAGE} is not supported")
+
+
 def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) -> list[WordWithContext]:
     words_to_skip: list[WordWithContext] = []
     for word in words:

@@ -1,9 +1,9 @@
 import datetime
-import os
 import logging
+import os
 
-import requests
-
+ENGLISH = "english"
+GERMAN = "german"
 
 class Config:
     OPENAI_API_KEY: str = None
@@ -13,6 +13,9 @@ class Config:
     PROCESSING_DIRECTORY_PATH: str = None
 
     ANKI_CONNECT_URL: str = "http://localhost:8765"
+    SUPPORTED_LANGUAGES: list[str] = [ENGLISH, GERMAN]
+    DEFAULT_LANGUAGE = ENGLISH
+    LANGUAGE: str = None
 
     @classmethod
     def set_processing_directory_path(cls, path: str):
@@ -54,6 +57,16 @@ class Config:
             cls.setup_openai_api_key_from_environment()
         else:
             cls.OPENAI_API_KEY = api_key
+
+    @classmethod
+    def set_language_or_use_default(cls, language: str):
+        if language is None:
+            cls.LANGUAGE = cls.DEFAULT_LANGUAGE
+        elif language.lower() in cls.SUPPORTED_LANGUAGES:
+            cls.LANGUAGE = language.lower()
+        else:
+            raise Exception(f"Language [{language}] not supported. Supported languages: {cls.SUPPORTED_LANGUAGES}")
+        logging.info(f"Language set to [{cls.LANGUAGE}]")
 
     @classmethod
     def setup_openai_api_key_from_environment(cls):
