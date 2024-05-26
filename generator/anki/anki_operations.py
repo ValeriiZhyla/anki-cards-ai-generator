@@ -39,32 +39,48 @@ def check_card_exists(deck_name, search_term):
         return False
 
 
-def delete_card_from_deck(deck_name, word) -> bool:
-    logging.info(f"Deleting card [{word}] from deck [{deck_name}]")
-    query = f'"deck:{deck_name}" tag:"{word}"'
-    card_ids = find_cards(query)
+def delete_card_from_deck(deck_name: str, word: str) -> bool:
+    tag = word_to_tag(word)
+    logging.info(f"Deleting card [{word}] from deck [{deck_name}] using tag [{tag}]")
+    card_ids = find_all_cards_with_tag(deck_name, tag)
     if not card_ids:
         logging.warning("No cards found with the specified term in the given deck.")
-        return False
-
-    delete_result = delete_cards(card_ids)
-    if delete_result.get('error') is None:
-        logging.info(f"Successfully deleted card for [{word}]")
         return True
+    delete_result = delete_cards_by_id(card_ids)
+    if delete_result.get('error') is None:
+        # sometimes cards are not deleted -> retry
+        remaining_cards = find_all_cards_with_tag(deck_name, tag)
+        if len(remaining_cards) == 0:
+            logging.info(f"Successfully deleted card for [{word}]")
+            return True
+        else:
+            logging.error(f"Operations thrown no error, but some cards with tag [{tag}] are still in the deck - {remaining_cards}."
+                          f" This happens, if a card is in review process. Restart Anki and try again.")
+            return False
+
     else:
         logging.error(f"Failed to delete cards: {delete_result.get('error')}")
         return False
+
+
+def find_all_cards_with_tag(deck_name, tag):
+    card_ids = find_cards(f'"deck:{deck_name}" tag:"{tag}"')
+    logging.info(f"Found [{len(card_ids)}] cards with tag [{tag}] in deck [{deck_name}]")
+    logging.debug(f"Found cards with tag {tag} in deck [{deck_name}]: [{card_ids}]")
+    return card_ids
 
 
 def find_cards(query):
     return invoke('findCards', {'query': query})['result']
 
 
-def delete_cards(card_ids):
-    return invoke('deleteNotes', {'notes': card_ids})
+def delete_cards_by_id(card_ids):
+    result = invoke('deleteNotes', {'notes': card_ids})
+    logging.info(f"Deletion performed for cards with ids {card_ids}")
+    return result
 
 
-def get_card_ids_from_deck(deck_name):
+def get_all_card_ids_from_deck(deck_name: str):
     return invoke('findCards', {'query': f'deck:"{deck_name}"'})
 
 
@@ -73,7 +89,7 @@ def get_card_info(card_ids):
 
 
 def get_all_words_from_deck(deck_name) -> list[str]:
-    card_ids = get_card_ids_from_deck(deck_name)['result']
+    card_ids = get_all_card_ids_from_deck(deck_name)['result']
     if not card_ids:
         logging.info(f"No cards found in deck '{deck_name}'.")
         return []

@@ -26,7 +26,7 @@ If there are several important contexts, write the main context first.
 
 Do not put any unrelated sentences in the card, as the "Card Example". Your output should contain only the text for the card.
 
-I expect 3-4 sentences in every card.
+I expect 4-5 sentences in every card.
 
 Create Anki cards based on the text above as follows:
 """

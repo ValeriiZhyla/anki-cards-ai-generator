@@ -6,55 +6,116 @@ from ..entities import CardRawDataV1
 
 def get_front_html(card_data: CardRawDataV1) -> str:
     formatted_text = card_data.card_text.replace('. ', '.<br>')
-
-    front_content = f"""
-    <div style="text-align: center; max-width: 80%; margin: auto; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; padding: 10px;">
+    styles = """
+    <style>
+    .card {
+        max-width: 90%; 
+        margin: auto; 
+        padding: 10px;
+    }
+    .card-image {
+        max-width: 100%; 
+        max-height: 450px; 
+        height: auto; 
+        width: auto; 
+        border-radius: 10px;
+    }
+    
+    .card-text {
+        font-size: 18px;
+        text-align: justify;
+        line-height: 1.5;
+    }
+    
+    .hint {
+        font-family: Consolas;
+        font-size: 20px;
+        
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-top: 50px; 
+        margin-bottom: 20px;
+    }
+    
+    .delimiter {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        height: 3px;
+        border: none;
+        background-color: #ccc;
+        display: block;
+    }
+    
+    .dictionary-url {
+        color: gray; 
+        font-weight: bold;
+        text-decoration: underline; 
+    }
+    
+    .audio-container {
+        text-align: right;
+    }
+    .audio-text {
+        color: gray;
+        font-weight: bold;
+    }
+    .audio-button {
+        margin-left: 5px;
+    }
+    
+</style>"""
+    front_content = styles + f"""
+    <div class="card">
         <!-- Image -->
-        <img src="{os.path.basename(card_data.image_path)}" style="max-width: 100%; max-height: 500px; height: auto; width: auto;">
+        <img class="card-image" src="{os.path.basename(card_data.image_path)}">
         
         <!-- Delimiter -->
-        <hr style="margin-top: 20px; margin-bottom: 20px;">
-        
+        <hr class="delimiter">   
+             
         <!-- Text -->
-        <p style="text-align: justify;">{formatted_text}</p>
+        <p class="card-text">{formatted_text}</p>
         
         <!-- Delimiter -->
-        <hr style="margin-top: 20px; margin-bottom: 20px;">
+        <hr class="delimiter">
         
         <!-- Dictionary Link and Audio Button -->
-        <div>
+    """
+
+    # Prepare the container for dictionary link and audio
+    front_content += """
+    <div class='hint'>
     """
 
     # If there's a dictionary URL, add a link to it
     if card_data.dictionary_url:
-        front_content += f"""
-            <a href='{card_data.dictionary_url}' target='_blank' style='margin-right: 20px;'>Cambridge Dictionary</a>
-        """
+        front_content += f"<a class='dictionary-url' href='{card_data.dictionary_url}' target='_blank'>Dictionary</a>"
 
-    # Add audio if exists
+    # Add audio if it exists
     if card_data.audio_path:
-        audio_tag = f"[sound:{os.path.basename(card_data.audio_path)}]"
-        front_content += f"{audio_tag}"
+        audio_text = f"<span class='audio-text'>Audio</span>"
+        audio_button = f"<span class='audio-button'>[sound:{os.path.basename(card_data.audio_path)}]</span>"
+        front_content += f"<div class='audio-container'>{audio_text}{audio_button}</div>"
+
+    # Close the container
+    front_content += "</div>"
 
     front_content += """
-        </div>
     </div>
     """
     return front_content
 
+
 def get_back_html(card_data: CardRawDataV1) -> str:
     return f"""
-    <div style='font-family: Arial, sans-serif; font-size: 20px; text-align: center; margin-bottom: 20px;'>
+    <div style='font-family: Verdana, sans-serif; font-size: 20px; text-align: center; margin-bottom: 20px;'>
         {card_data.word}
     </div>
     """
 
+
 def format(card_data: CardRawDataV1, deck_name: str):
     # Ensure sentences end with a new line in HTML and handle text styling
-    # TODO make nice-looking card!
-    # TODO Create HTML content for the back of the card with added CSS for styling
-    # TODO Some templates
-    # TODO Also use some styling for word
     front_content = get_front_html(card_data)
     back_content = get_back_html(card_data)
 
