@@ -1,0 +1,39 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Build Executable
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # PyInstaller needs to run on an OS that matches the target executable's OS.
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Specify the Python version.
+
+    - name: Install Dependencies
+      run: |
+        pip install pyinstaller
+        # Add other dependencies if needed
+        pip install -r requirements.txt  # Assuming you have a requirements.txt file
+
+    - name: Run PyInstaller
+      run: |
+        pyinstaller --onefile --paths=./generator ./generator/read-generate-import.py
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: executable
+        path: ./dist/read-generate-import.exe
