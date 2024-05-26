@@ -34,8 +34,8 @@ def get_front_html(card_data: CardRawDataV1) -> str:
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        margin-top: 40px; 
-        margin-bottom: 20px;
+        margin-top: 50px; 
+        margin-bottom: 10px;
     }
     
     .delimiter {

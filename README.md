@@ -64,7 +64,7 @@ Tool creates for each word:
 After generation, these files are used for card creation. 
 Generated cards are imported into Anki deck automatically.
 
-An example can be found in [Demo](demo).
+An example input file, generated elements and card screenhots can be found in [Demo](demo).
 
 ## OpenAI API
 Text: [gpt-4o](https://platform.openai.com/docs/models/gpt-4o)  
@@ -74,12 +74,12 @@ Audio: [tts-1-hd](https://platform.openai.com/docs/guides/text-to-speech)
 ### Cost
 Billing: https://platform.openai.com/settings/organization/billing/overview
 
-DALLE-3 call is the most expensive step, 0.05$ pro image. This is expensive compared with free images, but:
+DALLE-3 call is the most expensive step, 0.04$ pro image. This is expensive compared with free images, but:
 - Sometimes it is really difficult to find an image that describes some abstract content.
 - These images boost (at least mine) learning process a lot
 - Cards are much better than DALLE-2 cards in this use case
 
-Text generation is much cheaper, less than 0.01$ pro image
+Text generation is much cheaper, less than 0.01$ pro image. Total cost of a card is <= 0.05$ pro card.
 
 ## FAQ
 A: Audio file plays when I'm opening the card, I don't like it!  

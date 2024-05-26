@@ -1,52 +1,61 @@
 anki_prompt_preamble = """I want you to act like a professional Anki card maker, able to create Anki cards from the text I provide.
 
 With regard to formulating card content, you should follow two principles.
-First, principle of minimal information: The material you learn should be formulated as simply as possible. Simplicity doesn't have to mean missing out on information and skipping the hard part.
-Second, optimize the wording: The wording of your items must be optimized to ensure that, in a minimum amount of time, the user who reads the question, can respond as quickly as possible. This will reduce error rates, increase specificity, reduce response time, and help your concentration.
+1. Minimal Information: The learning material should be simple yet comprehensive, without skipping complex details.
+2. Optimized Wording: Ensure the card's wording allows quick understanding and response, aiming to reduce error rates and increase focus.
 
-You can not use the word from input in the output. All letters should be masked with underscores.
-If the input contains several words, the letters should be masked with underscores, and spaces remain spaces.
-For example, "free will" should be masked as "____ ___", and "attitude" should be masked as "________".
 
-I can provide a word or a phrase with empty context
-WORD: [target word]; CONTEXT: []
-In this case, use most likely context or different contexts of your choice.
+Context Handling:
+- Provide cards with or without context:
+  - No Context: If no context is given, use or create suitable contexts.
+  - With Context: Use the provided context. If the context distorts the word's conventional usage, it should be disregarded.
+- Do not mix context fields in the card and ensure the context is meaningful for the card content.
 
-Alternatively, I can provide a word or a phrase with a context:
-WORD: [target word]; CONTEXT: [context]
-In this case, use the given context for card generation.
-Context can be a sentence with this word, but it can also be a single or several fields related to this word. 
-You should not mix the fields in the card, and use the context only if it is meaningful for the card.
-It the context of combinations of contexts violated from conventional word usage, ignore this context.
-If there are several important contexts, write the main context first. 
+Input Format:
+- I can provide a word or a phrase with empty context: 
+  - WORD: [target word]; CONTEXT: []
+- Alternatively, I can provide a word or a phrase with a context:
+  - WORD: [target word]; CONTEXT: [context]
 
-Do not put any unrelated sentences in the card, as the "Card Example". Your output should contain only the text for the card.
+Output Expectations:
+- Exclude unrelated sentences, as the "Card Example". 
+- You can not use the word from input in the output. All letters should be masked with underscores.
+- Each card should contain 4-5 sentences focused solely on explaining the masked word or phrase.
+- Your output should contain only the text for the card.
 
-I expect 4-5 sentences in every card.
+Masking Rules:
+- Mask the target word with underscores, preserving spaces between words ("free will" becomes "____ ____").
+- Number of underscores should match the number of the letters ("salvation" becomes "_________")
+- Only mask the target word, not its contextual usage. For instance, "seizure" in "ship seizure" should only mask "seizure."
 
-Create Anki cards based on the text above as follows:
+Here are some examples, in format 
+WORD: [target word]; CONTEXT: [optional context]; RESULT: [what I expect to get as output]
 """
 
-anki_examples = {"struggle": "Something that can only be accomplished with great effort is said to be a ________. "
-                             "The verb form of ________ can be used for physical or mental effort. "
-                             "But is also used for 'to be engaged in a fight' "
-                             "Student may ________ with a difficult algebra problem. ",
-                 "jot down": "To write quickly. "
-                             "You might ___ ____ a friend's email address on the back of your grocery list. "
-                             "It's a good word to use when you're writing a brief note, a phone number, or a list — especially when you're doing it in a hurry. ",
-                 "attitude": "An ________ is somewhere between a belief, a stance, a mood, and a pose. "
-                             "If you've got an ________ about something, it can be hard to change it because you think you're right. "
-                             "A complex mental state involving beliefs and feelings and values and dispositions to act in certain ways."
-                             "An ________ is a way of thinking that you can express just by standing a certain way. "
-                             "For example, putting your hands on your hips and rolling your eyes expresses one kind of ________, while kneeling with your palms together expresses "
-                             "a very different one.",
-                 "free will": "Something that allows individuals to make choices independently is known as ____ ___. "
-                              "Philosophers often debate whether ____ ___ truly exists or if our decisions are predetermined. "
-                              "The concept of ____ ___ is central to discussions about moral responsibility."
-                              "In religious contexts, ____ ___ is often linked to the ability to choose between good and evil."
+anki_examples = {"struggle": ["", "Something that can only be accomplished with great effort is said to be a ________. "
+                                  "The verb form of ________ can be used for physical or mental effort. "
+                                  "But is also used for 'to be engaged in a fight' "
+                                  "Student may ________ with a difficult algebra problem. "],
+                 "jot down": ["", "To write quickly. "
+                                  "You might ___ ____ a friend's email address on the back of your grocery list. "
+                                  "It's a good word to use when you're writing a brief note, a phone number, or a list — especially when you're doing it in a hurry. "],
+                 "attitude": ["", "An ________ is somewhere between a belief, a stance, a mood, and a pose. "
+                                  "If you've got an ________ about something, it can be hard to change it because you think you're right. "
+                                  "A complex mental state involving beliefs and feelings and values and dispositions to act in certain ways."
+                                  "An ________ is a way of thinking that you can express just by standing a certain way. "
+                                  "For example, putting your hands on your hips and rolling your eyes expresses one kind of ________, while kneeling with your palms together expresses "
+                                  "a very different one."],
+                 "free will": ["", "Something that allows individuals to make choices independently is known as ____ ___. "
+                                   "Philosophers often debate whether ____ ___ truly exists or if our decisions are predetermined. "
+                                   "The concept of ____ ___ is central to discussions about moral responsibility."
+                                   "In religious contexts, ____ ___ is often linked to the ability to choose between good and evil."],
+                 "seizure": ["ship seizure", "Something that involves taking control of a ship by force is known as a ship ______."
+                                             "In legal contexts, a ship ______ can occur due to violations of maritime law."
+                                             "Pirates are historically known for committing ship ______."
+                                             "Authorities may conduct a ship ______ to prevent illegal activities like smuggling."]
                  }
 
-anki_examples_strings = [f"Word: {word}; Card Example: {anki_examples[word]};\n" for word in anki_examples.keys()]
+anki_examples_strings = [f"WORD: [{word}]; CONTEXT: [{anki_examples[word][0]}]; RESULT:[{anki_examples[word][1]}]\n" for word in anki_examples.keys()]
 
 anki_full_prompt = anki_prompt_preamble + ''.join(anki_examples_strings)
 
