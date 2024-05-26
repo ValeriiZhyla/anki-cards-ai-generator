@@ -1,0 +1,10 @@
+{
+    "word": "eradicate",
+    "card_text": "To completely eliminate or destroy something is to ________ it. Efforts to ________ diseases like smallpox have been successful in the past. Governments and organizations often work together to ________ poverty and hunger. The goal of many environmental campaigns is to ________ pollution and protect natural habitats.",
+    "image_prompt": "A detailed image of a scientist in a lab, holding a vial labeled with a biohazard symbol, standing next to a microscope and lab equipment, with a large red \"X\" over an illustration of the smallpox virus. The background shows a clean, sterile laboratory environment, emphasizing the concept of completely eliminating or destroying diseases.",
+    "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QPryZXKHPUYkelmDFpdceDGh/user-eeHf9PQpjUPf3jjBJ5Rj68zF/img-kzhOoxUZ1IXNfckX8KaGYyb9.png?st=2024-05-26T15%3A39%3A33Z&se=2024-05-26T17%3A39%3A33Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-05-25T19%3A21%3A30Z&ske=2024-05-26T19%3A21%3A30Z&sks=b&skv=2021-08-06&sig=aR/7Liu41VzBoATaTdn2cK0nWS6ueICKNtlxAI5w4zc%3D",
+    "image_path": "./processing\\eradicate.png",
+    "audio_path": "./processing\\eradicate.mp3",
+    "dictionary_url": "https://dictionary.cambridge.org/dictionary/english/eradicate",
+    "version": 1
+}

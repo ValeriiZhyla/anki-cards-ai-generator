@@ -1,0 +1,10 @@
+{
+    "word": "free will",
+    "card_text": "Something that allows individuals to make choices independently is known as ____ ___. Philosophers often debate whether ____ ___ truly exists or if our decisions are predetermined. The concept of ____ ___ is central to discussions about moral responsibility. In religious contexts, ____ ___ is often linked to the ability to choose between good and evil.",
+    "image_prompt": "An open path in a serene forest, with multiple diverging trails symbolizing different choices, under a clear sky with sunlight filtering through the trees. No text in the image.",
+    "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QPryZXKHPUYkelmDFpdceDGh/user-eeHf9PQpjUPf3jjBJ5Rj68zF/img-ag2g2WOdaZmsQfUbswLI2uZU.png?st=2024-05-26T14%3A24%3A31Z&se=2024-05-26T16%3A24%3A31Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-05-25T17%3A34%3A24Z&ske=2024-05-26T17%3A34%3A24Z&sks=b&skv=2021-08-06&sig=QKZS2Jfw1hxjrEdZMqBLE33QZlins2wWnd5TBU0qvc0%3D",
+    "image_path": "./processing\\free_will.png",
+    "audio_path": "./processing\\free_will.mp3",
+    "dictionary_url": "https://dictionary.cambridge.org/dictionary/english/free-will",
+    "version": 1
+}
