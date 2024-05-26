@@ -43,11 +43,11 @@ def exclude_imported_words(input_words, imported_existing_words) -> list[WordWit
 
 def main():
     # Create the parser
-    parser = argparse.ArgumentParser(description="Process some data for Anki cards.")
+    parser = argparse.ArgumentParser(description="This tool processes the list of words or phrases (with optional context) and creates an Anki card for each word. The cards are then imported via AnkiConnect.")
 
     # Required positional arguments
-    parser.add_argument('input_file', type=str, help="Path to the input file")
-    parser.add_argument('processing_directory', type=str, help="Path of the directory where the data should be processed")
+    parser.add_argument('input_file', type=str, help="Path to the input file, CSV with semicolons or Excel. Header [word;context] is required")
+    parser.add_argument('processing_directory', type=str, help="Path of the directory where the data should be processed. It could be an empty directory. If directory contains generated cards, tool will suggest to import them.")
 
     # Optional arguments
     parser.add_argument('--openai_api_key', type=str, help="API key for OpenAI. If not set, the value from environment variable OPENAI_API_KEY is used", default=None)

@@ -28,9 +28,9 @@ Then Anki can be synchronized with AnkiWeb, and the deck can be used from other 
 
 ## Usage
 Syntax:  
-TODO  
-Options:   
-TODO  
+```bash
+read-generate-import.py [-h] [--openai_api_key OPENAI_API_KEY] [--deck_name DECK_NAME] [--anki_media_directory_path ANKI_MEDIA_DIRECTORY_PATH] [--language {english,german}] input_file processing_directory
+```
 
 Default settings:
 ```bash
@@ -39,7 +39,7 @@ python -m generator.read-generate-import ./demo/input_words.csv ./processing
 
 Custom settings:
 ```bash
-python -m generator.read-generate-import ./demo/input_words.csv ./processing --openai_api_key="YOUR_KEY" --deck_name="my_amazing_deck" --anki_media_directory_path="custom_path/Anki2/User/collection.media"
+python -m generator.read-generate-import ./demo/input_words.csv ./processing --openai_api_key="YOUR_KEY" --deck_name="my_amazing_deck" --anki_media_directory_path="custom_path/Anki2/User/collection.media" --language="german"
 ```
 ### Input
 CSV with semicolon as separator (you can use commas in sentences and context), or an Excel file.
@@ -47,9 +47,11 @@ Header "word;context" is expected.
 Example:
 ```csv
 word;context
+tax fraud;
 purchasing power parity;economy
 affect;
 consciousness;the state of human being
+free will;
 ```
 
 ### Output
