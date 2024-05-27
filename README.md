@@ -4,6 +4,7 @@ The creation of these cards is an interesting, but sometimes time-consuming proc
 There are many automations (e.g. [AnkiBrain](https://ankiweb.net/shared/info/1915225457)) that can create the anki cards from prompts using ChatGPT.
 However, these tools do not allow prompt customization or image creation.
 
+
 ## Purpose
 Automate the creation of the Anki cards for learning words or phrases in different languages. 
 This tool is a card generator, [Anki](https://apps.ankiweb.net/) can be used for learning process.
@@ -36,7 +37,10 @@ The synchronization is very straightforward, and is described [here](https://doc
 4. Anki is running.
 5. Tool is compatible with python 3.10+
 
+### Optional  
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/valeriizhyla)
 ## Usage
+
 Syntax:  
 ```bash
 read-generate-import.py input_file processing_directory \
