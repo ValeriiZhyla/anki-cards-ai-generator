@@ -5,7 +5,8 @@ There are many automations (e.g. [AnkiBrain](https://ankiweb.net/shared/info/191
 However, these tools do not allow prompt customization or image creation.
 
 ## Purpose of this tool
-Automate the creation of the Anki cards for learning words or phrases in different languages.
+Automate the creation of the Anki cards for learning words or phrases in different languages. 
+This tool is a card generator, [Anki](https://apps.ankiweb.net/) can be used for learning process.
 
 Workflow:
 1. Create list of words or phrases with some context
@@ -17,25 +18,35 @@ Workflow:
 - German (with [DWDS](https://www.dwds.de/))
 
 ### Language Levels
-You can choose a CERF language level for card generation: A1, A2, B1, B2, C1, C2
+You can choose a CERF language level for card generation: A1, A2, B1, B2, C1, C2.
 
 Note, that not all words can be explained at the beginner levels. 
 
-## Prerequisites
-1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY or use --openai_api_key option.
-2. Add-on [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is used for the import of the cards. It must be installed.
-3. Anki is running
-4. Tool is compatible with python 3.10+
-
-## Synchronization
+### Synchronization
 Cards are imported into local Anki client, and pictures are copied to the Anki media folder (e.g. to 'C:\\Users\\User\\AppData\\Roaming\\Anki2\\User 1\\collection.media').  
 Then Anki can be synchronized with AnkiWeb, and the deck can be used from other devices.
+
+## Prerequisites
+1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY or use --openai_api_key option.
+2. [Anki](https://apps.ankiweb.net/) must be installed.
+3. Add-on [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is used for the import of the cards. It must be installed. AnkiConnect website contains short installation guide.
+4. Anki is running.
+5. Tool is compatible with python 3.10+
+
 
 ## Usage
 Syntax:  
 ```bash
-read-generate-import.py [-h] [--openai_api_key OPENAI_API_KEY] [--deck_name DECK_NAME] [--anki_media_directory_path ANKI_MEDIA_DIRECTORY_PATH] [--language {english,german}] [--level {A1,A2,B1,B2,C1,C2}] input_file processing_directory
+read-generate-import.py input_file processing_directory \
+          [-h] \
+          [--openai_api_key OPENAI_API_KEY] \
+          [--deck_name DECK_NAME] \
+          [--anki_media_directory_path ANKI_MEDIA_DIRECTORY_PATH] \
+          [--language {english,german}] \
+          [--level {A1,A2,B1,B2,C1,C2}] 
 ```
+
+input_file processing_directory and processing directory can be relative or absolute paths.
 
 ### Default settings
 ```bash
@@ -98,16 +109,25 @@ DALLE-3 call is the most expensive step, 0.04$ pro image. This is expensive comp
 Text generation is much cheaper, less than 0.01$ pro image. Total cost of a card is <= 0.05$ pro card.
 
 ## FAQ
-A: Audio file plays when I'm opening the card, I don't like it!  
-Q: By default, Anki automatically plays audio on the front and back of cards. You can choose ["Don't play audio automatically"](https://docs.ankiweb.net/deck-options.html) in deck options. In this case Anki will not play audio until you click the replay audio button.
+Q: Audio file plays when I'm opening the card, I don't like it!  
+A: By default, Anki automatically plays audio on the front and back of cards. You can choose ["Don't play audio automatically"](https://docs.ankiweb.net/deck-options.html) in deck options. In this case Anki will not play audio until you click the replay audio button.
 
-A: I don't like the generated cards!
-Q: At first, try to regenerate the card, maybe provide more context. If the tool creates something totally wrong - please create an issue on GitHub. You can also adjust the prompts at your own discretion. 
+Q: I don't like the generated cards!
+A: At first, try to regenerate the card, maybe provide more context. If the tool creates something totally wrong - please create an issue on GitHub. You can also adjust the prompts at your own discretion. 
 
-A: Will this tool correct my typos?  
-Q: No, Garbage In - Garbage Out. If ChatGPT will understand your word, the tool will create a contextually correct card with a typo on the back side of card. You can fix it manually in the anki app or regenerate the card. 
+Q: Will this tool correct my typos?  
+A: No, Garbage In - Garbage Out. If ChatGPT will understand your word, the tool will create a contextually correct card with a typo on the back side of card. You can fix it manually in the anki app or regenerate the card. 
 
-A: Card text is too complicated, I don't know these words or constructions!
-Q: You can set the language complexity with --level option.
+Q: Card text is too complicated, I don't know these words or constructions!
+A: You can set the language complexity with --level option.
+
+Q: I like the tool, but I would like to use it with another language...
+A: For this purpose, it is required to:
+          1. Check whether the language is supported by ChatGPT.
+          2. Translate prompts for text generation, and adjust them. Probably we will require help of person with a good language level.
+          3. Good dictionary, to place a link in cards (dictionary can be ignored).
+          4. Create an issue with this information, or create a fork.
+          
+
 ## Artifacts
 [![Workflow Name](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml/badge.svg)](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml)
