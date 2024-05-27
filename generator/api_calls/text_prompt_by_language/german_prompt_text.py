@@ -37,6 +37,10 @@ Regeln für das Maskieren:
 - Die Anzahl der Unterstriche sollte der Anzahl der Buchstaben entsprechen ("Erlösung" wird zu "________").
 - Sie sollten nur das Wort maskieren, nicht den Kontext. Zum Beispiel, wenn das Wort 'Grafikkarte' lautet und der Kontext ein 'Rechner' ist, dann sollte die Karte nur 'Grafikkarte' erklären und maskieren, nicht 'Rechner'."
 
+Sprachniveau:
+- Eine Person mit Sprachniveau [B1] sollte die Karte verstehen. 
+- Wörter und Konstruktionen, die einer Person mit diesem Niveau vertraut sein sollten.
+- Falls die Sprachniveau C1 oder C2 gesetzt wird, ignoriere Instruktionen zum Sprachniveau.
 
 Hier sind die Beispiele im Format
 WORD: [Zielwort]; CONTEXT: [Kontext (optional)]; RESULT: [was ich als Ausgabe erwarte]
@@ -67,6 +71,7 @@ anki_examples_strings = [f"WORD: [{word}]; CONTEXT: [{anki_examples[word][0]}]; 
 
 anki_full_prompt = anki_prompt_preamble + ''.join(anki_examples_strings)
 
+# TODO Niveau Parameter
 
 def get_prompt():
     return anki_full_prompt

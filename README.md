@@ -17,7 +17,7 @@ Workflow:
 - German (with [DWDS](https://www.dwds.de/))
 
 ## Prerequisites
-1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required.
+1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY or use --openai_api_key option.
 2. Add-on [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is used for the import of the cards. It must be installed.
 3. Anki is running
 4. Tool is compatible with python 3.10+
