@@ -33,6 +33,7 @@ Masking Rules:
 
 """
 
+
 def examples() -> str:
     examples_preamble = """
     Here are some examples, in format 
@@ -77,10 +78,3 @@ def rule_language_level() -> str:
 
 def get_prompt() -> str:
     return anki_prompt_preamble + rule_language_level() + examples()
-
-
-
-
-
-def get_prompt():
-    return anki_full_prompt
