@@ -16,6 +16,11 @@ Workflow:
 - English (with [Cambridge Dictionary](https://dictionary.cambridge.org/))
 - German (with [DWDS](https://www.dwds.de/))
 
+### Language Levels
+You can choose a CERF language level for card generation: A1, A2, B1, B2, C1, C2
+
+Note, that not all words can be explained at the beginner levels. 
+
 ## Prerequisites
 1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY or use --openai_api_key option.
 2. Add-on [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is used for the import of the cards. It must be installed.
@@ -39,7 +44,12 @@ python -m generator.read-generate-import ./demo/input_words.csv ./processing
 
 Custom settings:
 ```bash
-python -m generator.read-generate-import ./demo/input_words.csv ./processing  --language="german" --level="B2" --openai_api_key="YOUR_KEY" --deck_name="my_amazing_deck" --anki_media_directory_path="custom_path/Anki2/User/collection.media"
+python -m generator.read-generate-import ./demo/input_words.csv ./processing  \
+                                          --language="german" \
+                                          --level="B2" \
+                                          --openai_api_key="YOUR_KEY" \
+                                          --deck_name="my_amazing_deck" \
+                                          --anki_media_directory_path="custom_path/Anki2/User/collection.media"
 ```
 ### Input
 CSV with semicolon as separator (you can use commas in sentences and context), or an Excel file.
@@ -85,5 +95,13 @@ Text generation is much cheaper, less than 0.01$ pro image. Total cost of a card
 A: Audio file plays when I'm opening the card, I don't like it!  
 Q: By default, Anki automatically plays audio on the front and back of cards. You can choose ["Don't play audio automatically"](https://docs.ankiweb.net/deck-options.html) in deck options. In this case Anki will not play audio until you click the replay audio button.
 
+A: I don't like the generated cards!
+Q: At first, try to regenerate the card, maybe provide more context. If the tool creates something totally wrong - please create an issue on GitHub. You can also adjust the prompts at your own discretion. 
+
+A: Will this tool correct my typos?  
+Q: No, Garbage In - Garbage Out. If ChatGPT will understand your word, the tool will create a contextually correct card with a typo on the back side of card. You can fix it manually in the anki app or regenerate the card. 
+
+A: Card text is too complicated, I don't know these words or constructions!
+Q: You can set the language complexity with --level option.
 ## Artifacts
 [![Workflow Name](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml/badge.svg)](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml)
