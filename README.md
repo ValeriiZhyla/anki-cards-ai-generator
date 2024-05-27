@@ -98,8 +98,8 @@ Tool creates for each word:
 After generation, these files are used for card creation. 
 Generated cards are imported into Anki deck automatically.
 
-An example input file, generated elements and card screenshots can be found in [Words Demo](demo/words_and_cards/english).
-Examples for different language levels can be found in [Levels Demo](demo/different_levels)
+An example input file, generated elements and card screenshots can be found in [Words Demo](demo/words_and_cards/english).  
+Examples for different language levels can be found in [Levels Demo](demo/different_levels).  
 
 ## OpenAI API
 Text: [gpt-4o](https://platform.openai.com/docs/models/gpt-4o)  
