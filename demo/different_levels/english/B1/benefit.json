@@ -1,0 +1,10 @@
+{
+    "word": "benefit",
+    "card_text": "A positive result or advantage gained from something is called a _______. When you receive a _______ from an action, it means you have gained something good. For example, regular exercise has many health _______. Employees often receive _______s like health insurance and paid vacation from their jobs. A _______ can also refer to a fundraising event to help someone in need.",
+    "image_prompt": "A vibrant scene depicting various benefits: a person jogging in a park with a healthy glow, symbolizing health benefits from exercise; a workplace setting with icons of health insurance and paid vacation, representing employee benefits; and a community event with people gathered around a stage, indicating a fundraising benefit event. The background should be lively and positive, emphasizing the advantages and positive outcomes associated with the word \"benefit.\" No text in the image.",
+    "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QPryZXKHPUYkelmDFpdceDGh/user-eeHf9PQpjUPf3jjBJ5Rj68zF/img-vd93IiatFHsPNOEdGFqI313N.png?st=2024-05-27T16%3A21%3A09Z&se=2024-05-27T18%3A21%3A09Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-05-26T22%3A43%3A48Z&ske=2024-05-27T22%3A43%3A48Z&sks=b&skv=2021-08-06&sig=Gl5x651ZbV9zpG05VCxC7KXr81oWKtLEug4t2HPHKEU%3D",
+    "image_path": "./processing\\benefit.png",
+    "audio_path": "./processing\\benefit.mp3",
+    "dictionary_url": "https://dictionary.cambridge.org/dictionary/english/benefit",
+    "version": 1
+}

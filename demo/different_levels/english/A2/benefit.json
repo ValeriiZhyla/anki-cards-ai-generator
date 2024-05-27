@@ -1,0 +1,10 @@
+{
+    "word": "benefit",
+    "card_text": "A positive outcome or advantage gained from something is called a _______. People often seek a _______ when they participate in activities or make decisions. For example, exercising regularly has the _______ of improving health. Companies may offer _______s to employees, such as health insurance or paid time off. In general, a _______ is something that improves your situation or well-being.",
+    "image_prompt": "A vibrant scene of a person jogging in a park with clear skies, surrounded by lush greenery, symbolizing the health benefits of regular exercise. In the background, a corporate office building with visible amenities like a gym and a cafeteria, illustrating employee benefits such as health insurance and paid time off. The overall setting should convey a sense of well-being and improved quality of life. No text in the image.",
+    "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QPryZXKHPUYkelmDFpdceDGh/user-eeHf9PQpjUPf3jjBJ5Rj68zF/img-bQNXeJY1hvTu2FuM1jcRBXWt.png?st=2024-05-27T16%3A14%3A05Z&se=2024-05-27T18%3A14%3A05Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-05-26T23%3A20%3A44Z&ske=2024-05-27T23%3A20%3A44Z&sks=b&skv=2021-08-06&sig=ezCSYL3p%2BVbXeAlwqcfWRpA00BjLXJHGLreq5puP0Xk%3D",
+    "image_path": "./processing\\benefit.png",
+    "audio_path": "./processing\\benefit.mp3",
+    "dictionary_url": "https://dictionary.cambridge.org/dictionary/english/benefit",
+    "version": 1
+}

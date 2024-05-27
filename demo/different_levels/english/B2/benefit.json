@@ -1,0 +1,10 @@
+{
+    "word": "benefit",
+    "card_text": "A positive result or advantage gained from something is known as a _______. People often seek a _______ when they invest time or money into a project. Employees may receive health insurance as a _______ of their job. Regular exercise provides numerous _______s for both physical and mental health. Governments may offer tax _______s to encourage certain behaviors, like buying eco-friendly cars.",
+    "image_prompt": "A lush, green park with a person jogging on a well-maintained path, showcasing the benefits of regular exercise. In the background, a modern office building with a sign indicating health insurance benefits for employees. Nearby, an eco-friendly car parked with a visible tax incentive sticker. The scene should be vibrant and positive, illustrating various advantages people can gain. No text in the image.",
+    "image_url": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QPryZXKHPUYkelmDFpdceDGh/user-eeHf9PQpjUPf3jjBJ5Rj68zF/img-21U82B5dfRzB9QYetSpp3gX6.png?st=2024-05-27T16%3A27%3A35Z&se=2024-05-27T18%3A27%3A35Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-05-27T10%3A32%3A51Z&ske=2024-05-28T10%3A32%3A51Z&sks=b&skv=2021-08-06&sig=sNKhTz5MQKyI1nHA15ltejLWJGx6KyIxDockb7ALPRc%3D",
+    "image_path": "./processing\\benefit.png",
+    "audio_path": "./processing\\benefit.mp3",
+    "dictionary_url": "https://dictionary.cambridge.org/dictionary/english/benefit",
+    "version": 1
+}
