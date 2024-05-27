@@ -118,4 +118,3 @@ class Config:
         else:
             raise EnvironmentError(f"Unknown OS [{os.name}]")
         logging.info(f"Use default anki media directory [{cls.ANKI_MEDIA_DIRECTORY}]")
-

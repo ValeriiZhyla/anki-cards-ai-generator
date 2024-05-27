@@ -14,7 +14,6 @@ def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWith
     words_remaining = words_total
 
     logging.info(f"Starting generation of text and images for {words_total} words {list(map(lambda entry: entry.word, input_words))}")
-    # TODO add audio to the word on the front.
     words_cards: dict[WordWithContext, CardRawDataV1] = {}
 
     for word_with_context in input_words:
