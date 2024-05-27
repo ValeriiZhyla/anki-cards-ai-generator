@@ -70,8 +70,12 @@ python -m generator.read-generate-import ./demo/input_words.csv ./processing  \
           --deck_name="my_amazing_deck" \
           --anki_media_directory_path="custom_path/Anki2/User/collection.media"
 ```
+
+You can adjust and use the [run_generator.cmd](run_generator.cmd) for Windows or [run_generator.bsh](run_generator.bsh) for Linux/MacOS to avoid typing the defaults and paths every time.
+
 ### Input
-CSV with semicolon as separator (you can use commas in sentences and context), or an Excel file.
+This tool reads a file as input.
+It can be a CSV file with semicolon as separator (you can use commas in sentences and context), or an Excel file.
 Header "word;context" is expected.
 Example:
 ```csv
@@ -114,23 +118,77 @@ Text generation is much cheaper, less than 0.01$ per card. Total cost of a card 
 ## FAQ
 Q: Audio file plays when I'm opening the card, I don't like it!  
 A: By default, Anki automatically plays audio on the front and back of cards. You can choose ["Don't play audio automatically"](https://docs.ankiweb.net/deck-options.html) in deck options. In this case Anki will not play audio until you click the replay audio button.  
-
+*****
 Q: I don't like the generated cards!  
 A: At first, try to regenerate the card, maybe provide more context. If the tool creates something totally wrong - please create an issue on GitHub. You can also adjust the prompts at your own discretion.  
-
+*****
 Q: Will this tool correct my typos?  
 A: No, Garbage In - Garbage Out. If ChatGPT understands your input, the tool will create a contextually correct card that may include your typo on the back of the card. You can fix it manually in the anki app or regenerate the card.  
-
+*****
 Q: Card text is too complicated, I don't know these words or constructions!  
 A: You can set the language complexity with --level option.  
-
+*****
 Q: I like the tool, but I would like to use it with another language...  
 A: For this purpose, it is required to:  
 1. Check whether the language is supported by ChatGPT.  
 2. Translate prompts for text generation, and adjust them. Probably we will require help of person with a good language level. 
 3. Good dictionary, to place a link in cards (dictionary can be ignored).  
 4. Create an issue with this information, or create a fork.  
-          
+*****
+Q: I'm getting an error:  
+```bash
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\read-generate-import.py", line 9, in <module>
+    from generator import generate_cards, entities
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\generate_cards.py", line 4, in <module>
+    from generator.api_calls import openai_image, openai_text, openai_audio
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\api_calls\openai_image.py", line 2, in <module>
+    from openai import OpenAI
+ModuleNotFoundError: No module named 'openai'
+```
+A: Tool is supplied with [requirements.txt](requirements.txt), which should be used with venv. When requirements.txt and venv don't ring a bell, then you can install the dependencies in your normal python environment using `pip install`:  
+```bash
+pip install -r requirements.txt
+```
+*****
+Q: I'm getting an error:
+```bash
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\read-generate-import.py", line 87, in <module>
+    main()
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\read-generate-import.py", line 72, in main
+    validation.check_anki_connect()
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\validation.py", line 22, in check_anki_connect
+    raise IOError("Failed to connect to AnkiConnect. It might be not running")
+OSError: Failed to connect to AnkiConnect. It might be not running
+```
+A: Check whether Anki app is running and AnkiConnect is installed
+*****
+Q: I'm getting an error:
+```bash
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\read-generate-import.py", line 87, in <module>
+    main()
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\read-generate-import.py", line 75, in main
+    input_words: list[WordWithContext] = read_input_file.read_file_based_on_extension(args.input_file)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\input\read_input_file.py", line 55, in read_file_based_on_extension
+    return read_csv_file(file_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\input\read_input_file.py", line 38, in read_csv_file
+    return read_from_dataframe(df)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\input\read_input_file.py", line 26, in read_from_dataframe
+    check_columns(df)
+  File "D:\AnkiProject\anki-cards-ai-generator\generator\input\read_input_file.py", line 19, in check_columns
+    raise ValueError(f"Missing required columns: {', '.join(missing_cols)}")
+ValueError: Missing required columns: word, context
+```
+A: Probably you are using a CSV file, which is not separated with semicolon (this guy `;`).
 
-## Artifacts
-[![Workflow Name](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml/badge.svg)](https://github.com/ValeriiZhyla/anki-cards-ai-generator/actions/workflows/python-build-windows.yml)
