@@ -85,8 +85,8 @@ class Config:
     def set_level_or_use_default(cls, level):
         if level is None:
             cls.LEVEL = cls.DEFAULT_LEVEL
-        elif level.lower() in cls.SUPPORTED_LEVELS:
-            cls.LEVEL = level.lower()
+        elif level.upper() in cls.SUPPORTED_LEVELS:
+            cls.LEVEL = level.upper()
         else:
             raise Exception(f"Language level [{level}] not supported. Supported language levels: {cls.SUPPORTED_LEVELS}")
         logging.info(f"Language level set to [{cls.LEVEL}]")
