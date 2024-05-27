@@ -38,6 +38,11 @@ def check_language():
         raise Exception(f"Language {Config.LANGUAGE} is not supported")
 
 
+def check_level():
+    if Config.LEVEL not in Config.SUPPORTED_LEVELS:
+        raise Exception(f"Language level {Config.LEVEL} is not supported")
+
+
 def filter_words_are_present_in_deck(deck_name, words: list[WordWithContext]) -> list[WordWithContext]:
     words_to_skip: list[WordWithContext] = []
     for word in words:

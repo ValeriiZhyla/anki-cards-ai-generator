@@ -54,6 +54,7 @@ def main():
     parser.add_argument('--deck_name', type=str, help="Name of the Anki deck. If not set, the default name is generated", default=None)
     parser.add_argument('--anki_media_directory_path', type=str, help="Path to the Anki media directory. If not set, the standard path for each OS is used", default=None)
     parser.add_argument('--language', type=str, help="Target card language. Not only the card translation, customized generation process for each language", default=Config.DEFAULT_LANGUAGE, choices=Config.SUPPORTED_LANGUAGES)
+    parser.add_argument("--level", type=str, help="Current language level, that should be used for card creation to avoid overcomplicated cards for beginners and vice versa", default=Config.DEFAULT_LEVEL, choices=Config.SUPPORTED_LEVELS)
 
     # Parse arguments
     args = parser.parse_args()
@@ -65,6 +66,7 @@ def main():
     Config.set_anki_media_directory_or_use_default(args.anki_media_directory_path)
     Config.set_processing_directory_path(args.processing_directory)
     Config.set_language_or_use_default(args.language)
+    Config.set_level_or_use_default(args.level)
 
     # validate environment and read inputs
     validation.check_anki_connect()

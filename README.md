@@ -39,7 +39,7 @@ python -m generator.read-generate-import ./demo/input_words.csv ./processing
 
 Custom settings:
 ```bash
-python -m generator.read-generate-import ./demo/input_words.csv ./processing --openai_api_key="YOUR_KEY" --deck_name="my_amazing_deck" --anki_media_directory_path="custom_path/Anki2/User/collection.media" --language="german"
+python -m generator.read-generate-import ./demo/input_words.csv ./processing  --language="german" --level="B2" --openai_api_key="YOUR_KEY" --deck_name="my_amazing_deck" --anki_media_directory_path="custom_path/Anki2/User/collection.media"
 ```
 ### Input
 CSV with semicolon as separator (you can use commas in sentences and context), or an Excel file.

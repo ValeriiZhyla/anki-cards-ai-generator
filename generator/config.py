@@ -5,6 +5,14 @@ import os
 ENGLISH = "english"
 GERMAN = "german"
 
+A1 = "A1"
+A2 = "A2"
+B1 = "B1"
+B2 = "B2"
+C1 = "C1"
+C2 = "C2"
+
+
 class Config:
     OPENAI_API_KEY: str = None
     SECONDS_WAIT_BETWEEN_DALLE_CALLS: int = 20
@@ -13,9 +21,14 @@ class Config:
     PROCESSING_DIRECTORY_PATH: str = None
 
     ANKI_CONNECT_URL: str = "http://localhost:8765"
+
     SUPPORTED_LANGUAGES: list[str] = [ENGLISH, GERMAN]
-    DEFAULT_LANGUAGE = ENGLISH
+    DEFAULT_LANGUAGE: str = ENGLISH
     LANGUAGE: str = None
+
+    SUPPORTED_LEVELS: list[str] = [A1, A2, B1, B2, C1, C2]
+    DEFAULT_LEVEL: str = C1
+    LEVEL: str = None
 
     @classmethod
     def set_processing_directory_path(cls, path: str):
@@ -67,6 +80,16 @@ class Config:
         else:
             raise Exception(f"Language [{language}] not supported. Supported languages: {cls.SUPPORTED_LANGUAGES}")
         logging.info(f"Language set to [{cls.LANGUAGE}]")
+
+    @classmethod
+    def set_level_or_use_default(cls, level):
+        if level is None:
+            cls.LEVEL = cls.DEFAULT_LEVEL
+        elif level.lower() in cls.SUPPORTED_LEVELS:
+            cls.LEVEL = level.lower()
+        else:
+            raise Exception(f"Language level [{level}] not supported. Supported language levels: {cls.SUPPORTED_LEVELS}")
+        logging.info(f"Language level set to [{cls.LEVEL}]")
 
     @classmethod
     def setup_openai_api_key_from_environment(cls):
