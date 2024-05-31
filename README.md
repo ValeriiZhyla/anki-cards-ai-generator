@@ -203,5 +203,5 @@ A: Probably you are using a CSV file, which is not separated with semicolon (thi
 
 *****
 Q: I'm getting an error "model was not found: Basic (type in the answer)".  
-A: Probably you are using some old version of Anki, non-english client or have deleted the default models. You can set your custom model name using --card_model option.
+A: Probably you are using some old version of Anki, non-english client or have deleted the default models. You can set your custom model name using --card_model option. More about [Anki Note Types](https://docs.ankiweb.net/getting-started.html#note-types)
 
