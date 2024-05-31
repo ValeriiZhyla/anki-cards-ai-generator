@@ -31,7 +31,7 @@ Afterwards, Anki can be synchronized with AnkiWeb, and the deck can be used from
 The synchronization is very straightforward, and is described [here](https://docs.ankiweb.net/syncing.html).
 
 ## Prerequisites
-1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY or use --openai_api_key option.
+1. This is an application that automates Anki cards creation process using the ChatGPT, DALLE and TTS models. Your [OpenAI API](https://platform.openai.com/api-keys) key is required. You can set environment variable OPENAI_API_KEY (.env is supported) or use --openai_api_key option.
 2. [Anki](https://apps.ankiweb.net/) must be installed.
 3. Add-on [AnkiConnect](https://ankiweb.net/shared/info/2055492159) is used for the import of the cards. It must be installed. AnkiConnect website contains short installation guide.
 4. Anki is running.

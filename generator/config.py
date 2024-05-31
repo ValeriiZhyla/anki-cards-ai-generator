@@ -1,6 +1,9 @@
 import datetime
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 ENGLISH = "english"
 GERMAN = "german"
