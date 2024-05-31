@@ -200,6 +200,6 @@ ValueError: Missing required columns: word, context
 A: Probably you are using a CSV file, which is not separated with semicolon (this guy `;`).
 
 *****
-Q: I'm getting an error "model was not found: Basic (type in the answer)".
+Q: I'm getting an error "model was not found: Basic (type in the answer)".  
 A: Probably you are using some old version of Anki, non-english client or have deleted the default models. You can set your custom model name using --card_model option.
 
