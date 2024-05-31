@@ -33,6 +33,9 @@ class Config:
     DEFAULT_LEVEL: str = C1
     LEVEL: str = None
 
+    DEFAULT_CARD_MODEL: str = "Basic (type in the answer)"
+    CARD_MODEL: str = None
+
     @classmethod
     def set_processing_directory_path(cls, path: str):
         if path is None:
@@ -93,6 +96,18 @@ class Config:
         else:
             raise Exception(f"Language level [{level}] not supported. Supported language levels: {cls.SUPPORTED_LEVELS}")
         logging.info(f"Language level set to [{cls.LEVEL}]")
+
+    @classmethod
+    def set_card_model_or_use_default(cls, card_model: str):
+        if card_model is None:
+            cls.CARD_MODEL = cls.DEFAULT_CARD_MODEL
+        else:
+            cls.CARD_MODEL = card_model
+
+        if cls.CARD_MODEL != cls.DEFAULT_CARD_MODEL:
+            logging.warning(f"Usage of custom card model: [{cls.CARD_MODEL}]")
+        logging.info(f"Used card model: [{cls.CARD_MODEL}]")
+
 
     @classmethod
     def setup_openai_api_key_from_environment(cls):

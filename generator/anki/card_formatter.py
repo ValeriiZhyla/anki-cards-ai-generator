@@ -1,6 +1,7 @@
 import os
 
 from . import anki_operations
+from ..config import Config
 from ..entities import CardRawDataV1
 
 
@@ -122,7 +123,7 @@ def format(card_data: CardRawDataV1, deck_name: str):
     # Construct the note dictionary with HTML content
     return {
         "deckName": deck_name,
-        "modelName": "Basic (type in the answer)",
+        "modelName": Config.CARD_MODEL,
         "fields": {
             "Front": front_content,
             "Back": back_content
