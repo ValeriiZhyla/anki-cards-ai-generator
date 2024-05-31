@@ -49,7 +49,9 @@ read-generate-import.py input_file processing_directory \
           [--deck_name DECK_NAME] \
           [--anki_media_directory_path ANKI_MEDIA_DIRECTORY_PATH] \
           [--language {english,german}] \
-          [--level {A1,A2,B1,B2,C1,C2}] 
+          [--level {A1,A2,B1,B2,C1,C2}] \
+          [--card_model CARD_MODEL]
+
 ```
 
 input_file processing_directory and processing directory can be relative or absolute paths.
