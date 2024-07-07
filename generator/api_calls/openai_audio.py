@@ -11,9 +11,11 @@ def chat_generate_and_save_audio(word: str, target_file_path: str):
         api_key=Config.OPENAI_API_KEY
     )
 
+    # use period for pause
     with client.audio.speech.with_streaming_response.create(
             model="tts-1-hd",
             voice="nova",
-            input=word,
+            input=". " + word + ". ",
+
     ) as response:
         response.stream_to_file(target_file_path)

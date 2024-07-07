@@ -27,9 +27,9 @@ Output Expectations:
 
 Masking Rules:
 - Mask the target word with underscores, preserving spaces between words ("free will" becomes "____ ____").
-- Number of underscores should match the number of the letters ("salvation" becomes "_________")
-- Only mask the target word, not its contextual usage. For instance, "seizure" in "ship seizure" should only mask "seizure."
-
+- Number of underscores should match the exact number of the letters ("salvation" becomes "_________", "stumble on something" becomes "_______ __ _________").
+- The word following "to" should be masked as usual, but "to" itself should not be masked ("to warrant" becomes "to _______").
+- Only mask the target word, not its contextual usage. For instance, "seizure" in "ship seizure" should only mask "seizure.
 
 """
 
@@ -60,7 +60,11 @@ def examples() -> str:
                      "seizure": ["ship seizure", "Something that involves taking control of a ship by force is known as a ship ______."
                                                  "In legal contexts, a ship ______ can occur due to violations of maritime law."
                                                  "Pirates are historically known for committing ship ______."
-                                                 "Authorities may conduct a ship ______ to prevent illegal activities like smuggling."]
+                                                 "Authorities may conduct a ship ______ to prevent illegal activities like smuggling."],
+                     "to stumble on something": ["", "To accidentally discover or encounter something unexpectedly is to _______ __ _________.",
+                                                     "You might _______ __ _________ while cleaning your attic and find an old photo album.",
+                                                     "Researchers sometimes _______ __ _________ that leads to significant scientific breakthroughs.",
+                                                     "The phrase can also mean to trip over an object, causing you to lose your balance."]
                      }
 
     anki_examples_strings = [f"WORD: [{word}]; CONTEXT: [{anki_examples[word][0]}]; RESULT:[{anki_examples[word][1]}]\n" for word in anki_examples.keys()]
