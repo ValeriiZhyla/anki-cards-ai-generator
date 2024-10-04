@@ -68,5 +68,5 @@ def chat_generate_text(input_word: str) -> str:
     generated_text = response.choices[0].message.content
     return generated_text
 
-
-print(chat_generate_text("pagan"))
+if __name__ == "__main__":
+    print(chat_generate_text("pagan"))

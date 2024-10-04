@@ -20,13 +20,14 @@ def chat_generate_audio(word: str) -> str:
     speech_file_path = f"D:/AnkiProject/anki-cards-ai-generator/prototype/get_audio_from_openai/{word}.mp3"
 
     with client.audio.speech.with_streaming_response.create(
-        model="tts-1-hd",
-        voice="nova",
-        input=word
+            model="tts-1-hd",
+            voice="nova",
+            input=word
     ) as response:
         response.stream_to_file(speech_file_path)
     return speech_file_path
 
 
-path = chat_generate_audio("Rindfleischkuchen")
-print(path)
+if __name__ == "__main__":
+    path = chat_generate_audio("Rindfleischkuchen")
+    print(path)

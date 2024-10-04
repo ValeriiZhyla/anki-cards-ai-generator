@@ -57,6 +57,9 @@ def main():
     parser.add_argument("--level", type=str, help="Current language level, that should be used for card creation to avoid overcomplicated cards for beginners and vice versa", default=Config.DEFAULT_LEVEL, choices=Config.SUPPORTED_LEVELS)
     parser.add_argument("--card_model", type=str, help="Available model names depend on anki client language. If default model name is not available in your client (or you want to use a custom model) - use this parameter", default=Config.DEFAULT_CARD_MODEL)
 
+    parser.add_argument('--image_generation_mode', type=str, help="Use alternative image generation mode (e.g to use a cheaper model with Replicate)", default=Config.DEFAULT_IMAGE_GENERATION_MODE, choices=Config.SUPPORTED_IMAGE_GENERATION_MODES)
+    parser.add_argument('--replicate_api_key', type=str, help="API key for Replicate. If not set, the value from environment variable REPLICATE_API_TOKEN is used", default=None)
+    parser.add_argument('--replicate_model_url', type=str, help="URL of Replicate model, which will be used to generate an image", default=None)
 
     # Parse arguments
     args = parser.parse_args()
@@ -64,6 +67,8 @@ def main():
     # Setup config
     Config.setup_logging()
     Config.set_openai_key_or_use_default(args.openai_api_key)
+    Config.set_image_generation_mode_or_use_default(args.image_generation_mode)
+    Config.set_replicate_token_and_url_if_replicate_mode_used(args.replicate_api_key, args.replicate_model_url)
     Config.set_anki_deck_name_or_use_default(args.deck_name)
     Config.set_anki_media_directory_or_use_default(args.anki_media_directory_path)
     Config.set_processing_directory_path(args.processing_directory)

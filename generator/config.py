@@ -15,9 +15,13 @@ B2 = "B2"
 C1 = "C1"
 C2 = "C2"
 
+OPENAI = "openai"
+REPLICATE = "replicate"
+
 
 class Config:
     OPENAI_API_KEY: str = None
+
     SECONDS_WAIT_BETWEEN_DALLE_CALLS: int = 20
     DECK_NAME: str = None
     ANKI_MEDIA_DIRECTORY: str = None
@@ -35,6 +39,14 @@ class Config:
 
     DEFAULT_CARD_MODEL: str = "Basic (type in the answer)"
     CARD_MODEL: str = None
+
+    SUPPORTED_IMAGE_GENERATION_MODES = [OPENAI, REPLICATE]
+    DEFAULT_IMAGE_GENERATION_MODE = OPENAI
+    IMAGE_GENERATION_MODE: str = None
+
+    REPLICATE_API_KEY: str = None
+    REPLICATE_MODEL_URL: str = None
+
 
     @classmethod
     def set_processing_directory_path(cls, path: str):
@@ -136,3 +148,34 @@ class Config:
         else:
             raise EnvironmentError(f"Unknown OS [{os.name}]")
         logging.info(f"Use default anki media directory [{cls.ANKI_MEDIA_DIRECTORY}]")
+
+    @classmethod
+    def set_image_generation_mode_or_use_default(cls, image_generation_mode):
+        if image_generation_mode is None:
+            cls.IMAGE_GENERATION_MODE = cls.DEFAULT_IMAGE_GENERATION_MODE
+        elif image_generation_mode.lower() in cls.SUPPORTED_IMAGE_GENERATION_MODES:
+            cls.IMAGE_GENERATION_MODE = image_generation_mode.lower()
+        else:
+            raise Exception(f"Image generation mode [{image_generation_mode}] not supported. Supported modes: {cls.SUPPORTED_IMAGE_GENERATION_MODES}")
+        logging.info(f"Image generation mode set to [{cls.IMAGE_GENERATION_MODE}]")
+
+    @classmethod
+    def set_replicate_token_and_url_if_replicate_mode_used(cls, replicate_api_key, replicate_model_url):
+        if cls.IMAGE_GENERATION_MODE == REPLICATE:
+            logging.info(f"Used image generation mode: [{REPLICATE}]. Replicate config will be initialized")
+            if replicate_model_url is not None:
+                cls.REPLICATE_MODEL_URL = replicate_model_url
+            else:
+                raise Exception(f"To use generation mode [{REPLICATE}], a Replicate model url should be set with corresponding option")
+            logging.info(f"Replicate model url: {cls.REPLICATE_MODEL_URL}")
+            if replicate_api_key is not None:
+                cls.REPLICATE_API_KEY = replicate_api_key
+            elif replicate_api_key is None:
+                replicate_api_key_env = os.environ.get("REPLICATE_API_TOKEN")
+                if replicate_api_key_env is None:
+                    raise EnvironmentError("Replicate API key is set neither with the option nor with the REPLICATE_API_TOKEN environment variable")
+                else:
+                    cls.REPLICATE_API_KEY = replicate_api_key_env
+            logging.info(f"Replicate API key initialized")
+
+

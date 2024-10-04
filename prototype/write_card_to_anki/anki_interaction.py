@@ -42,5 +42,6 @@ front_text = "Question or Term"
 back_text = "Definition or Answer"
 image_file_path = "./testimage.jpg"
 
-response = add_note_with_image(deck, front_text, back_text, image_file_path)
-print(response)
+if __name__ == "__main__":
+    response = add_note_with_image(deck, front_text, back_text, image_file_path)
+    print(response)

@@ -1,13 +1,12 @@
 import logging
 import time
 
-from generator.api_calls import openai_image, openai_text, openai_audio
+from generator.api_calls import openai_image, openai_text, openai_audio, openai_image_prompt, replicate_image
 from generator.dictionaries import dictionaries
-from generator.config import Config
+from generator.config import Config, OPENAI, REPLICATE
 from generator.entities import WordWithContext, CardRawDataV1, serialize_to_json
 from generator.input.file_operations import save_text, generate_image_path, generate_card_data_path, download_and_save_image, generate_audio_path
 from generator.input.confirm import confirm_action
-
 
 def generate_text_and_image(input_words: list[WordWithContext]) -> dict[WordWithContext, CardRawDataV1]:
     words_total = len(input_words)
@@ -38,9 +37,11 @@ def create_card_for_word(word_with_context) -> CardRawDataV1:
     card_text = openai_text.chat_generate_text(word_with_context)
     logging.info("Card text is created")
 
-    image_prompt = openai_image.chat_generate_dalle_prompt(word_with_context, card_text)
-    image_url = openai_image.chat_generate_image(image_prompt)
+    image_prompt = openai_image_prompt.chat_generate_dalle_prompt(word_with_context, card_text)
+    image_url = get_image_url_depending_on_image_generation_mode(image_prompt)
+
     logging.info("Card Image is created")
+    logging.info(f"Image url: {image_url}")
 
     image_path = generate_image_path(Config.PROCESSING_DIRECTORY_PATH, word_with_context)
     download_and_save_image(image_url, image_path)
@@ -64,6 +65,15 @@ def create_card_for_word(word_with_context) -> CardRawDataV1:
     save_text(serialize_to_json(card_raw), card_data_path)
     logging.info(f"Card data is saved as [{card_data_path}]")
     return card_raw
+
+
+def get_image_url_depending_on_image_generation_mode(image_prompt):
+    if Config.IMAGE_GENERATION_MODE == OPENAI:
+        return openai_image.chat_generate_image(image_prompt)
+    elif Config.IMAGE_GENERATION_MODE == REPLICATE:
+        return replicate_image.replicate_generate_image(image_prompt)
+    else:
+        raise Exception(f"Unsupported image generation mode: [{Config.IMAGE_GENERATION_MODE}]")
 
 
 def wait_after_word_processing():

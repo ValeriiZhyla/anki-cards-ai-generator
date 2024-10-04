@@ -26,6 +26,7 @@ def create_cambridge_link_if_exists(word_or_phrase: str) -> str | None:
         print(f"An error occurred while checking the dictionary page: {e}")
         return None
 
-print(create_cambridge_link_if_exists("affecting"))
-print(create_cambridge_link_if_exists("aaaxxxzzz"))
-print("")
+if __name__ == "__main__":
+    print(create_cambridge_link_if_exists("affecting"))
+    print(create_cambridge_link_if_exists("aaaxxxzzz"))
+    print("")

@@ -73,9 +73,10 @@ def chat_generate_image(prompt: str) -> str:
     return image_url
 
 
-prompt = chat_generate_prompt("pagan",
-                              "A person who follows a polytheistic or pre-Christian religion (not a follower of one of the world's main religions) is referred to as a ______. Ancient Romans might have considered the Norse or the Celts as ______s. This term can also describe someone who has little or no religion and delights in sensual pleasures and material goods.")
-print(prompt)
+if __name__ == "__main__":
+    prompt = chat_generate_prompt("pagan",
+                                  "A person who follows a polytheistic or pre-Christian religion (not a follower of one of the world's main religions) is referred to as a ______. Ancient Romans might have considered the Norse or the Celts as ______s. This term can also describe someone who has little or no religion and delights in sensual pleasures and material goods.")
+    print(prompt)
 
-image_url = chat_generate_image(prompt)
-print(image_url)
+    image_url = chat_generate_image(prompt)
+    print(image_url)
