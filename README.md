@@ -122,8 +122,8 @@ Image: [dall-e-3](https://platform.openai.com/docs/guides/images/usage), 3 RPM, 
 Audio: [tts-1-hd](https://platform.openai.com/docs/guides/text-to-speech)  
 
 ## Replicate API
-Image: [stable-diffusion](https://replicate.com/stability-ai/stable-diffusion)
-You can use other Replicate model, just set --replicate_model_url
+Reference image model: [stable-diffusion](https://replicate.com/stability-ai/stable-diffusion)  
+You can use other Replicate model using --replicate_model_url option
 
 ### Cost
 Billing: https://platform.openai.com/settings/organization/billing/overview
